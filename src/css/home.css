@@ -1,0 +1,74 @@
+.navbar{
+    background-color: #e3f2fd;
+}
+.header{
+    position: fixed;
+    background-color: #dcdcdc;
+    width: 100% ;
+    z-index: 999;
+}
+.logo{
+    height: 50px;
+    margin-left: 100px;
+}
+.user{
+    margin-top: 30px;
+    margin-right: 10px;
+    height:100px;
+    width:250px;
+    overflow: visible;
+}
+.container{
+    margin: 120px auto;
+}
+input{
+    border: 1px solid #2e6da4;
+}
+.search{
+    margin:20px auto;
+    width:100%;
+}
+#search_input{
+    width:90%;
+}
+.bookstore{
+    margin-top: 50px;
+}
+.book_img{
+    height:170px;
+}
+.None{
+    border:0px;
+    background-color:transparent;
+}
+.home_user_image{
+    margin-left: 5px;
+    width:60px;
+    float: right;
+}
+.user_hello{
+    font-size: 25px;
+    float: left;
+    margin-top: 15px;
+}
+.display{
+    text-align:center;
+}
+.carousel_img{
+    margin: 0 auto;
+}
+.nav-link{
+    font-size: 25px;
+}
+.home_book_img{
+    width:200px;
+}
+.profile_choice{
+    float:right;
+    margin-right: -70px;
+    margin-top: 70px;
+}
+.navbar{
+    overflow: visible;
+    height:100px;
+}

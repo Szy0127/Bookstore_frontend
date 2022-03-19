@@ -1,25 +1,54 @@
-import logo from './logo.svg';
-import './App.css';
+import './App.css'
+import HomeView from "./view/HomeView"
+import BookView from "./view/BookView"
+import CartView from "./view/CartView"
+import OrderView from "./view/OrderView"
+import {BrowserRouter as Router, useRoutes} from 'react-router-dom'
+import ProfileView from "./view/ProfileView";
+import LoginView from "./view/LoginView";
+
+const GetRoutes = ()=>{
+
+    return useRoutes([
+        {
+            path:'/',
+            element:<HomeView/>
+        },
+        {
+            path:'/home',
+            element:<HomeView/>
+        },
+        {
+            path:'/bookDetails',
+            element:<BookView/>
+        },
+        {
+            path:'/cart',
+            element:<CartView/>
+        },
+        {
+            path:'/order',
+            element:<OrderView/>
+        },
+        {
+            path:'/profile',
+            element:<ProfileView/>
+        },
+        {
+            path:'/login',
+            element:<LoginView/>
+        },
+    ]);
+}
+
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <Router>
+            <GetRoutes/>
+        </Router>
+    );
 }
+
 
 export default App;

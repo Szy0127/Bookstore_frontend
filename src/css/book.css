@@ -1,0 +1,10 @@
+.book_img{
+    float:left;
+}
+.book_info{
+    float:left;
+}
+.book_name{
+    font-size: 25px;
+    margin-bottom: 10px;
+}

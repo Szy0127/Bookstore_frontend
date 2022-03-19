@@ -1,0 +1,27 @@
+.row{
+    margin-top: 40px;
+    font-size: 20px;
+}
+.logout{
+    margin-top: 30px;
+    margin-left: 150px;
+}
+.userinfo{
+    float: left;
+}
+.user_image{
+    width: 150px;
+}
+.profile_menu{
+    width:140px;
+    float: left;
+    margin-right: 10px;
+    position: relative;
+}
+.short{
+    width:100px;
+}
+
+.address_table{
+    margin-top: 20px;
+}
