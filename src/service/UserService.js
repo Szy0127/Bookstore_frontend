@@ -11,3 +11,12 @@ let addresses = [
 ]
 
 export const getAddresses = () => addresses;
+
+let users = [
+    ['szy0127',false],
+    ['thunderboy',false],
+    ['abcabc',true],
+    ['kkkkk',false]
+];
+
+export const getUsers = () => users;

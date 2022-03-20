@@ -29,7 +29,6 @@ export class OrderList extends React.Component {
                         <div className="order_info">
                             <span>{order[2]}</span>
                             <span>订单号：{order[3]}</span>
-                            <Button className="order_delete">删除</Button>
                         </div>
                 <tr>
                     <td>

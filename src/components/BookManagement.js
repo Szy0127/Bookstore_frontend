@@ -82,12 +82,12 @@ class BookTable extends React.Component {
             return;
         }
         this.setState({editRow: -1});
-        console.log("close",this.is_editing_books[0][2]);
+        // console.log("close",this.is_editing_books[0][2]);
         this.props.updateBooks(this.is_editing_books);
     }
 
     onChange(key, col, e) {//如果每输入一次就更新state 会导致排序+输入的情况下 输入未完成表格就变了
-        console.log(key,col,e.target.value);
+        // console.log(key,col,e.target.value);
         for(let index in this.is_editing_books){
             if(this.is_editing_books[index][0]==key){
                 this.is_editing_books[index][col + 1] = e.target.value;
@@ -207,7 +207,7 @@ export class BookManagement extends React.Component {
     handleAdd(book){
         book.unshift(this.state.savedBooks.length+1);
         book.unshift(this.state.savedBooks.length+1);
-        console.log(book);
+        // console.log(book);
         let books = this.state.books;
         let saved = this.state.savedBooks;
         books.unshift(book);
@@ -247,7 +247,7 @@ export class BookManagement extends React.Component {
     }
 
     render() {
-        console.log('render savedBooks:', this.state.savedBooks);
+        // console.log('render savedBooks:', this.state.savedBooks);
         return (
 
             <Layout>

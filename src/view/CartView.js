@@ -5,7 +5,6 @@ import {Layout} from 'antd'
 import {CartList} from "../components/CartList";
 import {HeaderInfo} from "../components/HeaderInfo";
 import {getCart} from "../service/BookService";
-
 class CartView extends React.Component {
 
     constructor(props) {

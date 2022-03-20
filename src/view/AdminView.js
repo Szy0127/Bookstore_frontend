@@ -5,6 +5,9 @@ import '../css/admin.css'
 import {getOrder} from "../service/BookService";
 import {SubMenu} from "../components/Menu";
 import {BookManagement} from "../components/BookManagement";
+import {UserManagement} from "../components/UserManagement";
+import {OrderManagement} from "../components/OrderManagement";
+
 class AdminView extends React.Component {
 
 
@@ -22,7 +25,7 @@ class AdminView extends React.Component {
 
     render() {
         const types = ['书籍管理', '用户管理','订单管理','统计'];
-        const contents = [<BookManagement/>];
+        const contents = [<BookManagement/>,<UserManagement/>,<OrderManagement/>];
         return (
             <Layout>
                 <HeaderInfo/>
