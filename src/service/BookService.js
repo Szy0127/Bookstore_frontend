@@ -28,14 +28,18 @@ let books = [['1', '1', 'Java核心技术卷II', '编程', '凯S.霍斯特曼', 
     ['28', '28', '哈利波特与魔法石', '魔幻小说', 'J·K·罗琳', '30.20', '“沉湎于虚幻的梦想，而忘记现实的生活，这是毫无益处的，千万记住。”                                ——阿不思·邓布利多', '1000', 'http://img3m1.ddimg.cn/88/0/25479421-1_w_1.jpg'],
     ['29', '29', '哈利·波特与死亡圣器', '魔幻小说', 'J·K·罗琳', '56.20', '两个人不能都活着，只有一个生存下来，我们中的一个将要永远离开……', '1551', 'http://img3m4.ddimg.cn/71/20/25479404-1_w_1.jpg']
 ]
-let cart = [1, 5, 8, 10, 15, 21, 25];
+let cart = [
+    [1,1],
+    [5,2],
+    [8,1],
+    [10,2],
+    [15,30],
+    [21,1],
+    [25,1]
+];
 export const getBooks = () => books;
 export const getBook = (i) => books[parseInt(i) - 1];
-export const getCart = () => books.filter(
-    (book) => {
-        return cart.indexOf(parseInt(book[0])) > -1;
-    }
-)
+export const getCart = () => cart;
 let orders = [
     [6,1, '2022-1-21', '87725228'],
     [5,2, '2021-12-30', '86985965'],

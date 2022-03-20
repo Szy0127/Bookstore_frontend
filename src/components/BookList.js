@@ -13,7 +13,6 @@ export class BookList extends React.Component {
         const col_number = 4;
         let index = 0;
         for (let book of this.props.books) {
-            console.log(1);
             row.push(
                 <div className="col-lg-3">
                     <Link

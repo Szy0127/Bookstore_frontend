@@ -1,15 +1,17 @@
 import {Button, Form, Input, Layout, Table} from 'antd';
 import React from "react";
 import {getAddresses} from "../service/UserService";
-const AddressForm = () => {
-    const formRef = React.createRef();
+const AddressForm = (props) => {
+    const [form] = Form.useForm();
     const onFinish = (values) => {
         console.log(values);
+        props.handleAdd([values.city,values.address,values.name,values.phone]);
+        form.resetFields();
     };
     return (
         <Form className="address_form"
             layout="inline"
-            ref={formRef} name="control-ref" onFinish={onFinish}
+            form={form} name="control-ref" onFinish={onFinish}
         >
             <Form.Item
                 name="city"
@@ -63,10 +65,9 @@ const AddressForm = () => {
         </Form>
     )
 }
-const AddressTable = () => {
-    const addresses = getAddresses();
+const AddressTable = (props) => {
     const dataSource = [];
-    for(let address of addresses){
+    for(let address of props.addresses){
         dataSource.push(
             {
                 city:address[0],
@@ -75,6 +76,10 @@ const AddressTable = () => {
                 phone:address[3]
             }
         )
+    }
+
+    const handleRemove = (address)=>{
+        props.handleRemove([address['city'],address['address'],address['name'],address['phone']]);
     }
 
     const columns = [
@@ -100,8 +105,8 @@ const AddressTable = () => {
         },
         {
             title:'操作',
-            render:()=>(
-                <Button>删除</Button>
+            render:(address)=>(
+                <Button onClick={handleRemove.bind(this,address)}>删除</Button>
             )
         }
     ];
@@ -113,15 +118,43 @@ export class Address extends React.Component {
 
     constructor(props) {
         super(props);
+        const addresses = getAddresses();
+        this.state = {addresses:addresses.slice()};
+        this.handleAdd = this.handleAdd.bind(this);
+        this.handleRemove = this.handleRemove.bind(this);
+    }
 
+    handleAdd(address){
+        let addresses = this.state.addresses;
+        addresses.unshift(address);
+        this.setState({addresses:addresses})
+    }
+
+    addressEqual(add1,add2){
+        for(let i in add1){
+            if(add1[i]!==add2[i]){
+                return false;
+            }
+        }
+        return true;
+    }
+    handleRemove(address){
+        let addresses = this.state.addresses;
+        for(let i in addresses){
+            if(this.addressEqual(addresses[i],address)){
+                addresses.splice(i,1);
+                this.setState({addresses:addresses});
+                return;
+            }
+        }
     }
 
 
     render() {
         return (
             <Layout>
-                <AddressForm/>
-                <AddressTable/>
+                <AddressForm handleAdd={this.handleAdd}/>
+                <AddressTable addresses={this.state.addresses} handleRemove={this.handleRemove}/>
             </Layout>
         );
 

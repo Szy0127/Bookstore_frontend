@@ -2,7 +2,7 @@ import React from 'react';
 import "../css/cart.css"
 import {Button,InputNumber,Table} from "antd";
 import {Book} from "./Book";
-
+import {getCart,getBook} from "../service/BookService";
 const CartFooter = function (props) {
     return (
         <div className="fixed-bottom cart_footer">
@@ -28,11 +28,13 @@ export class CartList extends React.Component {
 
         let checked = [];
         let numbers = [];//单个物品
-        for (let i in this.props.books) {
+        let books = [];
+        for (let cart of this.props.carts) {
             checked.push(false);
-            numbers.push(1);
+            numbers.push(cart[1]);
+            books.push(getBook(cart[0]));
         }
-        this.state = {all:false,checked: checked, numbers: numbers,books: this.props.books.slice()};
+        this.state = {all:false,checked: checked, numbers: numbers,books: books};
         this.handleAll = this.handleAll.bind(this);
         this.handleRemoveMulti = this.handleRemoveMulti.bind(this);
     }

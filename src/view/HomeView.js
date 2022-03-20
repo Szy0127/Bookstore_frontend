@@ -29,7 +29,7 @@ class HomeView extends React.Component {
         }
         let books = this.books.filter(
             (book) => {
-                return book[2].indexOf(bookName) > -1;
+                return book[2].toLowerCase().indexOf(bookName) > -1;
             }
         );
         // console.log(books);

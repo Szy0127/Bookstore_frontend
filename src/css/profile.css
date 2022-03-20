@@ -12,11 +12,10 @@
 .user_image{
     width: 150px;
 }
-.profile_menu{
+.submenu{
     width:140px;
     float: left;
     margin-right: 10px;
-    position: relative;
 }
 .short{
     width:100px;

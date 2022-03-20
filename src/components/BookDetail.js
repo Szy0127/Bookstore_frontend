@@ -44,11 +44,11 @@ export class BookDetail extends React.Component {
                     </div>
                 </div>
                 <div className="buttons">
-                    <div className="add_book pull-left">
+                    <div className="add_book">
                         {/*<Button onClick={this.add.bind(this,this.props.bookId)}>加入购物车</Button>*/}
                         <Button>加入购物车</Button>
                     </div>
-                    <div className="buy_book pull-right">
+                    <div className="buy_book">
                         <Button>立即购买</Button>
                     </div>
                 </div>

@@ -20,7 +20,7 @@ class CartView extends React.Component {
             <Layout>
                 <HeaderInfo/>
                 <div className='container'>
-                    <CartList books={getCart()}/>
+                    <CartList carts={getCart()}/>
                 </div>
             </Layout>
 

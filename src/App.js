@@ -6,6 +6,7 @@ import OrderView from "./view/OrderView"
 import {BrowserRouter as Router, useRoutes} from 'react-router-dom'
 import ProfileView from "./view/ProfileView";
 import LoginView from "./view/LoginView";
+import AdminView from "./view/AdminView";
 
 const GetRoutes = ()=>{
 
@@ -37,6 +38,10 @@ const GetRoutes = ()=>{
         {
             path:'/login',
             element:<LoginView/>
+        },
+        {
+            path:'/admin',
+            element:<AdminView/>
         },
     ]);
 }

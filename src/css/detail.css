@@ -13,3 +13,9 @@
     float: left;
     width:50%;
 }
+.add_book{
+    float: left;
+}
+.buy_book{
+    float: right;
+}

@@ -9,7 +9,7 @@ export class SearchBook extends React.Component {
     }
 
     handleSearch(e){
-        this.props.handleSearch(e.target.value);
+        this.props.handleSearch(e.target.value.toLowerCase());
     }
     handleClear(e){
         this.props.handleClear();

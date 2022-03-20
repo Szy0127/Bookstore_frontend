@@ -7,6 +7,7 @@ import logo from '../assets/logo.svg';
 import logoFont from '../assets/logo-name.svg';
 import user_image from '../assets/profile.jpg';
 
+const admin = true;
 export class HeaderInfo extends React.Component {
 
     constructor(props) {
@@ -64,6 +65,14 @@ export class HeaderInfo extends React.Component {
                     >
                         <Button>个人设置</Button>
                     </Link>
+                    {admin ?
+                        <Link
+                            to={{
+                                pathname: '/admin/'
+                            }}
+                        >
+                            <Button>数据管理</Button>
+                        </Link> :null}
                     <Link
                         to={{
                             pathname: '/login/'
