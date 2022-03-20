@@ -16,29 +16,18 @@ class HomeView extends React.Component {
     constructor(props) {
         super(props);
         this.books = getBooks();
-        this.state = {books: this.books.slice(), search_book: ""};
+        this.state = {books: this.books.slice()};
         this.handleSearch = this.handleSearch.bind(this);
         this.handleClear = this.handleClear.bind(this);
     }
 
 
-    handleSearch(bookName) {
-        if (bookName === "") {
-            this.setState({books: this.books.slice(), search_book: bookName});
-            return;
-        }
-        let books = this.books.filter(
-            (book) => {
-                return book[2].toLowerCase().indexOf(bookName) > -1;
-            }
-        );
-        // console.log(books);
-        // console.log(bookName);
-        this.setState({books: books, search_book: bookName});
+    handleSearch(books) {
+        this.setState({books: books});
     }
 
     handleClear() {
-        this.setState({books: this.books.slice(), search_book: ""});
+        this.setState({books: this.books.slice()});
     }
 
     render() {
@@ -47,8 +36,7 @@ class HomeView extends React.Component {
             <Layout>
                 <HeaderInfo/>
                 <div className='container'>
-                    <SearchBook books={this.books} search_book={this.state.search_book} handleSearch={this.handleSearch}
-                                handleClear={this.handleClear}/>
+                    <SearchBook books={this.books} handleSearch={this.handleSearch} handleClear={this.handleClear}/>
                     <BookCarousel/>
                     <BookList books={this.state.books}/>
                 </div>
