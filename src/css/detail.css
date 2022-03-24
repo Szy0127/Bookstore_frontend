@@ -4,9 +4,13 @@
     padding: 70px;
 }
 .detail_img{
-    width: 40%;
+    width: 30%;
     /*height:400px;*/
     float:left;
+}
+.ant-image{
+    /*position: static;*/
+    display: block;
 }
 .book_content{
     margin-left: 30px;

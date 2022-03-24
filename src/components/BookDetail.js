@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Layout} from 'antd'
+import {Button, Layout,Image} from 'antd'
 import {getBook} from "../service/BookService";
 import "../css/detail.css"
 export class BookDetail extends React.Component {
@@ -18,7 +18,7 @@ export class BookDetail extends React.Component {
 
             <Layout>
                 <div className="book_detail">
-                        <img className="detail_img" src={book[8]} alt={book[8]}/>
+                        <Image className="detail_img" src={book[8]} alt={book[8]}/>
                     <div className="book_content">
                         <h1>
                             {book[2]}

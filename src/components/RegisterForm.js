@@ -1,8 +1,7 @@
 import React from 'react';
 import {Button, Form, Input} from 'antd';
 import 'antd/dist/antd.css';
-import {Link} from "react-router-dom";
-
+import {register} from "../service/UserService";
 const layout = {
     labelCol: {
         span: 8,
@@ -25,6 +24,9 @@ class RegisterForm extends React.Component {
         super(props);
     }
 
+    onFinish(data){
+        register(data);
+    }
 
     render() {
         return (
@@ -74,13 +76,9 @@ class RegisterForm extends React.Component {
                         <Input/>
                     </Form.Item>
                     <Form.Item {...tailLayout}>
-                        <Link
-                            to = "/home"
-                        >
                             <Button type="primary" htmlType="submit">
                             Submit
                         </Button>
-                        </Link>
                         <Button htmlType="button" onClick={this.onReset}>
                             Reset
                         </Button>

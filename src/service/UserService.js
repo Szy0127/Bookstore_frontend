@@ -83,3 +83,22 @@ export const Redirect = ()=>{
     message.error("请先登录");
     return <Navigate to="/login"/>
 }
+
+export const register = (data)=>{
+    if(data['password']!==data['confirm']){
+        message.error("密码不一致");
+        return;
+    }
+    if(data['email'].indexOf('@')<0){
+        message.error("邮箱错误");
+        return;
+    }
+    users.push([data['username'],data['password'],false]);
+    message.success("注册成功");
+    history.push("/login");
+    history.go()
+}
+
+export const forget = ()=>{
+    message.info("已向注册邮箱发送邮件");
+}

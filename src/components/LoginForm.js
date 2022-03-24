@@ -3,8 +3,7 @@ import {Link} from 'react-router-dom';
 import {Button, Checkbox, Form, Input, Radio} from 'antd';
 import {LockOutlined, UserOutlined} from '@ant-design/icons';
 import 'antd/dist/antd.css';
-import {login} from "../service/UserService";
-import {message} from 'antd';
+import {login,forget} from "../service/UserService";
 
 const Login = () =>
     <React.Fragment>
@@ -59,7 +58,7 @@ export function LoginForm(props){
                         <Checkbox>Remember me</Checkbox>
                     </Form.Item>
 
-                    <a className="login-form-forgot" href="">
+                    <a className="login-form-forgot" onClick={forget}>
                         Forgot password
                     </a>
                 </Form.Item>
