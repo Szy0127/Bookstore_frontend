@@ -81,7 +81,7 @@ export class HeaderInfo extends React.Component {
                             pathname: '/login/'
                         }}
                     >
-                        <Button onClick={logout}>退出登录</Button>
+                        <Button onClick={logout}>{this.user?"退出登录":"登录"}</Button>
                     </Link>
                 </Layout>
                 : null
