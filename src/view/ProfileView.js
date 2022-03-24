@@ -7,7 +7,7 @@ import {HeaderInfo} from "../components/HeaderInfo";
 import {UserInfo} from "../components/UserInfo";
 import {Security} from "../components/Security";
 import {Address} from "../components/Address";
-import {SubMenu} from "../components/Menu";
+import {MyMenu} from "../components/Menu";
 
 
 const Alipay = ()=>
@@ -37,7 +37,7 @@ class ProfileView extends React.Component {
             <Layout>
                 <HeaderInfo/>
                 <div className='container'>
-                    <SubMenu types={types} handleChange={this.handleChange}/>
+                    <MyMenu types={types} handleChange={this.handleChange}/>
                     {contents[this.state.show]}
                 </div>
             </Layout>

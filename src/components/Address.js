@@ -139,6 +139,10 @@ export class Address extends React.Component {
         return true;
     }
     handleRemove(address){
+        let del = window.confirm("确认删除吗？");
+        if(!del){
+            return;
+        }
         let addresses = this.state.addresses;
         for(let i in addresses){
             if(this.addressEqual(addresses[i],address)){

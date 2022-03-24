@@ -14,7 +14,13 @@ export class UserManagement extends React.Component {
         let users = this.state.users;
         for(let index in users){
             if(users[index][0]===user['name']){
-                users[index][1] = !users[index][1];
+                if(!users[index][2]){
+                    let del = window.confirm("确认禁用此用户吗？");
+                    if(!del){
+                        return;
+                    }
+                }
+                users[index][2] = !users[index][2];
                 break;
             }
         }
@@ -26,7 +32,7 @@ export class UserManagement extends React.Component {
             dataSource.push(
                 {
                     name:user[0],
-                    status:user[1]
+                    status:user[2]
                 }
             )
         }

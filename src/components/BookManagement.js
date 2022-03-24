@@ -24,7 +24,7 @@ const tailLayout = {
 const BookForm = (props) => {
     const [form] = Form.useForm();
     const onFinish = (values) => {
-        console.log(values);
+        // console.log(values);
         let book = [];
         for(let key of props.keys){
             book.push(values[key]);
@@ -97,8 +97,12 @@ class BookTable extends React.Component {
     }
 
     handleRemove(book){
-        // console.log(book['key']);
+        let del = window.confirm("确认删除吗？");
+        if(!del){
+            return;
+        }
         this.props.handleRemove(book['key']);
+        this.setState({editRow:-1});
     }
 
     render() {
@@ -135,7 +139,9 @@ class BookTable extends React.Component {
                     onDoubleClick: this.showEditor,
                     render: (text, record, index) =>
                         // this.state.editRow == index && i != 0 && !this.props.closeInput? <Input defaultValue={text} onChange={this.onChange.bind(this, index, parseInt(i))}/> : text
-                        this.state.editRow == index && i != 0 ? <Input defaultValue={text} onChange={this.onChange.bind(this, record['key'], parseInt(i))}/> : text
+                        this.state.editRow == index && i!=0 ?
+                            <Input defaultValue={text} onChange={this.onChange.bind(this, record['key'], parseInt(i))} onBlur={console.log(123)}/> :
+                                text
                 }
             )
         }

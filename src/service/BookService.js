@@ -69,6 +69,15 @@ export const getOrder = (type) => {
     )
 }
 
+let bookSaled = [
+    [5,30],
+    [6,19],
+    [10,100],
+    [20,400],
+    [13,56],
+    [2,31]
+]
+export const getBookSaled  = ()=> bookSaled;
 // export const addCart = (i) => {
 //     // cart.unshift([i]);
 //     if(cart.indexOf(parseInt(i))>-1){

@@ -6,15 +6,18 @@ import '../css/bootstrap.min.css'
 import logo from '../assets/logo.svg';
 import logoFont from '../assets/logo-name.svg';
 import user_image from '../assets/profile.jpg';
+import {logout} from "../service/UserService";
 
-const admin = true;
 export class HeaderInfo extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {show: false};
+        this.admin = localStorage.getItem("admin");
+        this.user = localStorage.getItem("user");
         this.handleClick = this.handleClick.bind(this);
     }
+
 
     handleClick(e) {
         this.setState({show: !this.state.show});
@@ -65,7 +68,7 @@ export class HeaderInfo extends React.Component {
                     >
                         <Button>个人设置</Button>
                     </Link>
-                    {admin ?
+                    {this.admin ?
                         <Link
                             to={{
                                 pathname: '/admin/'
@@ -78,7 +81,7 @@ export class HeaderInfo extends React.Component {
                             pathname: '/login/'
                         }}
                     >
-                        <Button>退出登录</Button>
+                        <Button onClick={logout}>退出登录</Button>
                     </Link>
                 </Layout>
                 : null
@@ -89,7 +92,7 @@ export class HeaderInfo extends React.Component {
                 <nav className="navbar navbar-expand-lg navbar-light bg-light">
                     {nav}
                     <div className="user">
-                        <div className="user_hello">Hi,thunderboy</div>
+                        <div className="user_hello">Hi,{this.user}</div>
                         <a><img className="home_user_image rounded-circle" src={user_image} onClick={this.handleClick}/></a>
                         {select}
                     </div>

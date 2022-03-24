@@ -1,9 +1,9 @@
 import React from 'react';
-import {LoginForm} from '../components/LoginForm';
+import RegisterForm from "../components/RegisterForm";
 import "../css/login.css"
 
 
-class LoginView extends React.Component{
+class RegisterView extends React.Component{
 
     constructor(props) {
         super(props);
@@ -15,8 +15,8 @@ class LoginView extends React.Component{
                 <div className="login-container">
                     <div className="login-box">
                         <div className="login-content">
-                            <h1 className="page-title">Login</h1>
-                            <LoginForm />
+                            <h1 className="page-title">Register</h1>
+                            <RegisterForm/>
                         </div>
                     </div>
                 </div>
@@ -26,4 +26,4 @@ class LoginView extends React.Component{
     }
 }
 
-export default LoginView;
+export default RegisterView;

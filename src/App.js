@@ -6,8 +6,9 @@ import OrderView from "./view/OrderView"
 import {BrowserRouter as Router, useRoutes} from 'react-router-dom'
 import ProfileView from "./view/ProfileView";
 import LoginView from "./view/LoginView";
+import RegisterView from "./view/RegisterView";
 import AdminView from "./view/AdminView";
-
+import PrivateRoute from "./PrivateRoute";
 const GetRoutes = ()=>{
 
     return useRoutes([
@@ -25,15 +26,15 @@ const GetRoutes = ()=>{
         },
         {
             path:'/cart',
-            element:<CartView/>
+            element:<PrivateRoute component = {<CartView/>}/>
         },
         {
             path:'/order',
-            element:<OrderView/>
+            element:<PrivateRoute component = {<OrderView/>}/>
         },
         {
             path:'/profile',
-            element:<ProfileView/>
+            element:<PrivateRoute component = {<ProfileView/>}/>
         },
         {
             path:'/login',
@@ -41,7 +42,11 @@ const GetRoutes = ()=>{
         },
         {
             path:'/admin',
-            element:<AdminView/>
+            element:<PrivateRoute admin = "1" component = {<AdminView/>}/>
+        },
+        {
+            path:'/register',
+            element:<RegisterView/>
         },
     ]);
 }

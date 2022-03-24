@@ -4,7 +4,7 @@ import {HeaderInfo} from "../components/HeaderInfo";
 import {OrderList} from "../components/OrderList";
 import '../css/order.css'
 import {getOrder} from "../service/BookService";
-import {SubMenu} from "../components/Menu";
+import {MyMenu} from "../components/Menu";
 
 class OrderView extends React.Component {
 
@@ -27,7 +27,7 @@ class OrderView extends React.Component {
             <Layout>
                 <HeaderInfo/>
                 <div className='container'>
-                    <SubMenu types={types} handleChange={this.handleChange}/>
+                    <MyMenu types={types} handleChange={this.handleChange}/>
                     <OrderList orders={getOrder(this.state.show)}/>
                 </div>
             </Layout>

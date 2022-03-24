@@ -22,6 +22,7 @@ export class UserInfo extends React.Component {
     constructor(props) {
         super(props);
 
+        this.user = localStorage.getItem("user");
         this.formRef = React.createRef();
     }
 
@@ -45,7 +46,7 @@ export class UserInfo extends React.Component {
                         },
                     ]}
                 >
-                    <Input/>
+                    <Input defaultValue={this.user}/>
                 </Form.Item>
                 <Form.Item
                     name="gender"

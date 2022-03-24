@@ -21,7 +21,7 @@ export class Security extends React.Component {
 
     constructor(props) {
         super(props);
-
+        this.user = localStorage.getItem("user");
         this.formRef = React.createRef();
     }
 
@@ -44,7 +44,7 @@ export class Security extends React.Component {
                         },
                     ]}
                 >
-                    <Input/>
+                    <Input defaultValue={this.user}/>
                 </Form.Item>
                 <Form.Item
                     name="password"

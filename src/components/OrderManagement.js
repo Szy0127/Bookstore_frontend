@@ -14,7 +14,7 @@ export class OrderManagement extends React.Component {
         const dataSource = [];
         for (let order of this.orders) {
             let book = getBook(order[0]);
-            console.log(order[1], book[5]);
+            // console.log(order[1], book[5]);
             dataSource.push(
                 {
                     date: order[2],

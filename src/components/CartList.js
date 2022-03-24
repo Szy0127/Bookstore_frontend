@@ -92,11 +92,19 @@ export class CartList extends React.Component {
 
     handleRemoveOne(index, e) {
         e.preventDefault();
+        let del = window.confirm("确认删除吗？");
+        if(!del){
+            return;
+        }
         this.setState(this.getRemovedState(index));
     }
 
     handleRemoveMulti(e) {
         e.preventDefault();
+        let del = window.confirm("确认删除吗？");
+        if(!del){
+            return;
+        }
         let books = this.state.books;
         let checked = this.state.checked;
         for (let index = 0; index < checked.length; index++) {
@@ -118,29 +126,6 @@ export class CartList extends React.Component {
 
 
     render() {
-        // let carts = [];
-        // for (let index in this.state.books) {
-        //     let book = this.state.books[index];
-        //     carts.push(
-        //         <tr>
-        //             <th scope="row">
-        //                 <input type="checkbox" onChange={this.handleCheck.bind(this, index)}
-        //                        checked={this.state.checked[index]}/>
-        //             </th>
-        //             <td>
-        //                 <Book bookId={book[0]} book_width={300}/>
-        //             </td>
-        //             <td className="cart_book_content">{book[5]}</td>
-        //             <td className="cart_book_content">
-        //                 <InputNumber size="large" min={1} max={999} value={this.state.amounts[index]} onChange={this.handleAmount.bind(this,index)}/>
-        //             </td>
-        //             <td className="cart_book_content">{book[5]}</td>
-        //             <td>
-        //                 <Button onClick={this.handleRemoveOne.bind(this, index)}>删除</Button>
-        //             </td>
-        //         </tr>
-        //     )
-        // }
 
         const dataSource = [];
         for (let index in this.state.books) {

@@ -1,8 +1,10 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Link} from 'react-router-dom';
 import {Button, Checkbox, Form, Input, Radio} from 'antd';
 import {LockOutlined, UserOutlined} from '@ant-design/icons';
 import 'antd/dist/antd.css';
+import {login} from "../service/UserService";
+import {message} from 'antd';
 
 const Login = () =>
     <React.Fragment>
@@ -34,21 +36,22 @@ const Login = () =>
         </Form.Item>
     </React.Fragment>
 
-class LoginForm extends React.Component {
+export function LoginForm(props){
 
-    constructor(props) {
-        super(props);
-        this.state={admin:false};
-        this.handleUser = this.handleUser.bind(this);
+
+    const [admin,setAdmin] = useState(false);
+    const [form] = Form.useForm();
+    const handleSubmit = (data)=>{
+        login(data);
+    };
+
+    const handleUser = (e)=>{
+        setAdmin(e.target.value==="admin");
     }
 
-    handleUser(e){
-        this.setState({admin:e.target.value==="admin"});
-    }
-
-    submit(){
+    const submit = ()=>{
         let components = [];
-        if(!this.state.admin){
+        if(!admin){
             components.push(
                 <Form.Item>
 
@@ -62,47 +65,42 @@ class LoginForm extends React.Component {
                 </Form.Item>
             )
         }
-        const to = this.state.admin? "/admin":"/home";
+        // const to = admin? "/admin":"/home";
         components.push(
             <Form.Item>
-                <Link
-                    to={to}
-                >
                     <Button type="primary" htmlType="submit" className="login-form-button">
                         Log in
                     </Button>
-                </Link>
             </Form.Item>
         )
-        if(!this.state.admin){
+        if(!admin){
             components.push(
-                <a href="">Or register now!</a>
+                <a href="/register">Or register now!</a>
             )
         }
         return components;
     }
-    render() {
         return (
+
             <Form
+                onFinish={handleSubmit}
+                form={form}
                 name="normal_login"
                 className="login-form"
                 initialValues={{
                     remember: true,
-                    'radio-group':'user'
+                    'auth':'user'
                 }}
             >
-                <Form.Item name="radio-group">
-                    <Radio.Group onChange={this.handleUser}>
+                <Form.Item name="auth">
+                    <Radio.Group onChange={handleUser}>
                         <Radio value="user">用户</Radio>
                         <Radio value="admin">管理员</Radio>
                     </Radio.Group>
                 </Form.Item>
                 <Login/>
-                {this.submit()}
+                {submit()}
             </Form>
         );
-    }
 }
 
-
-export default LoginForm;
