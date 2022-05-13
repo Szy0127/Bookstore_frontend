@@ -23,7 +23,9 @@ class HomeView extends React.Component {
     componentDidMount(){
         getBooks((data) => {
             console.log(data);
-            this.setState({books: data})})
+            this.setState({books: data});
+            this.books = data;
+        })
     }
     handleSearch(books) {
         this.setState({books: books});
@@ -33,6 +35,12 @@ class HomeView extends React.Component {
         this.setState({books: this.books.slice()});
     }
 
+    /*
+    this.book保存了getBooks拿到的所有书的备份
+    this.state.book 结合search进行展示
+
+
+     */
     render() {
 
         return (

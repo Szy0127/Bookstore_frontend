@@ -20,7 +20,7 @@ export class SearchBook extends React.Component {
         console.log("finding",this.initialBooks);
         let books = this.initialBooks.filter(
             (book) => {
-                return book[2].toLowerCase().indexOf(bookName) > -1;
+                return book['name'].toLowerCase().indexOf(bookName) > -1;
             }
         );
         this.setState({searchName:bookName});
