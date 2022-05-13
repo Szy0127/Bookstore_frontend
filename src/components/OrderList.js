@@ -19,40 +19,71 @@ export class OrderList extends React.Component {
     //     this.setState({orders:orders});
     // }
 
+    getItemLists(orderItems){
+        let lists = [];
+        for(let i in  orderItems){
+            let book = orderItems[i]['book'];
+            let amount = orderItems[i]['amount'];
+            if(i==0){
+                lists.push(
+                    <tr>
+                        <td>
+                            <Book book_width={100} book={book}/>
+                        </td>
+                        <td>{book['price']}</td>
+                        <td>{amount}</td>
+                        <td>
+                            <Button>申请售后</Button>
+                        </td>
+                        <td>{(book['price']*amount).toFixed(2)}</td>
+                        <td>
+                            <div className="center">交易成功</div>
+                            <Button className="center block">订单详情</Button>
+                            <Button className="center block">查看物流</Button>
+                        </td>
+                        <td>
+                            <Button className="block">追加评论</Button>
+                            <Button className="block">申请开票</Button>
+                        </td>
+                    </tr>
+                )
+            }else{
+                lists.push(
+                    <tr>
+                        <td>
+                            <Book book_width={100} book={book}/>
+                        </td>
+                        <td>{book['price']}</td>
+                        <td>{amount}</td>
+                        <td/>
+                        <td>{(book['price']*amount).toFixed(2)}</td>
+
+                    </tr>
+                )
+            }
+        }
+        return lists;
+    }
+
+    formatDate(date){
+        return date.getFullYear()+"-"+date.getMonth()+"-"+date.getDay();
+    }
+
+
     render() {
-        console.log(3);
+        console.log(this.props.orders);
         let orders = [];
         for (let order of this.props.orders) {
-            let book = getBook(order[0])
             orders.push(
                 <React.Fragment>
                         <div className="order_info">
-                            <span>{order[2]}</span>
-                            <span>订单号：{order[3]}</span>
+                            <span>{this.formatDate(new Date(order['time']))}</span>
+                            <span>订单号：{order['orderID']}</span>
                         </div>
-                <tr>
-                    <td>
-                        <Book book_width={100} bookId={book[0]}/>
-                    </td>
-                    <td>{book[5]}</td>
-                    <td>{order[1]}</td>
-                    <td>
-                        <Button>申请售后</Button>
-                    </td>
-                    <td>{(book[5]*order[1]).toFixed(2)}</td>
-                    <td>
-                        <div className="center">交易成功</div>
-                        <Button className="center block">订单详情</Button>
-                        <Button className="center block">查看物流</Button>
-                    </td>
-                    <td>
-                        <Button className="block">追加评论</Button>
-                        <Button className="block">申请开票</Button>
-                    </td>
-                </tr></React.Fragment>
+                    {this.getItemLists(order['orderItems'])}</React.Fragment>
             )
-        }
 
+        }
         return (
             <React.Fragment>
                 <table className="table order_content">

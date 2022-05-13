@@ -15,13 +15,16 @@ class HomeView extends React.Component {
 
     constructor(props) {
         super(props);
-        this.books = getBooks();
-        this.state = {books: this.books.slice()};
+        this.state = {books: null};
         this.handleSearch = this.handleSearch.bind(this);
         this.handleClear = this.handleClear.bind(this);
     }
 
-
+    componentDidMount(){
+        getBooks((data) => {
+            console.log(data);
+            this.setState({books: data})})
+    }
     handleSearch(books) {
         this.setState({books: books});
     }
@@ -31,7 +34,7 @@ class HomeView extends React.Component {
     }
 
     render() {
-        console.log(this.state.books);
+
         return (
             <Layout>
                 <HeaderInfo/>

@@ -33,7 +33,7 @@ export class SearchBook extends React.Component {
 
 
     render(){
-        this.initialBooks = this.props.initialBooks? this.props.initialBooks : this.props.books.slice();
+        this.initialBooks = this.props.initialBooks? this.props.initialBooks : (this.props.books ? this.props.books.slice():[]);
         return(
             <div className="search">
                 <input id="search_input" type="text" value={this.state.searchName} placeholder="search" onChange={this.handleSearch}/>

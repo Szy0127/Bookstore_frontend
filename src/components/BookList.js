@@ -7,15 +7,15 @@ const BookCard = (props)=>{
     return (
         <Link to={{
         pathname: '/bookDetails',
-        search: '?id=' + props.book[0]}}
-          target="_blank"
+        search: '?id=' + props.book['bookID']}}
+          //target="_blank"
     >
         <Card
             hoverable
             style={{width: 181}}
-            cover={<img alt="image" src={props.book[8]} className={"bookImg"}/>}
+            cover={<img alt="image" src={props.book['image']} className={"bookImg"}/>}
         >
-            <Meta title={props.book[2]} description={'¥' + props.book[5]}/>
+            <Meta title={props.book['name']} description={'¥' + props.book['price']}/>
         </Card>
     </Link>
     )
@@ -29,6 +29,10 @@ export class BookList extends React.Component {
 
     render() {
 
+        if(!this.props.books){
+            return <div></div>;
+        }
+        console.log(this.props.books);
         return (
             <div className="bookstore">
                 <List

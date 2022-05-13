@@ -2,6 +2,10 @@ import {message} from "antd";
 import {history} from '../utils/history';
 import {Navigate} from "react-router-dom";
 import React from "react";
+import {postRequest,postRequest_v2,base_url} from "../utils/ajax";
+import sha256 from 'crypto-js/sha256';
+
+
 
 let addresses = [
     ['上海市', '东川路800号西21', '沈同学', '54749110'],
@@ -37,6 +41,24 @@ export const getUserConsumed = () => userConsumed;
 
 let admin = ['admin', '123456'];
 export const login = (data) => {
+
+    data['password'] = sha256(data['password'] + nonce).toString();
+    postRequest_v2(base_url+"login",data,
+        (user)=>{
+            if(user){
+                console.log(user);
+                localStorage.setItem('username',user['username']);
+                localStorage.setItem('password',user['password']);
+                localStorage.setItem('email',user['email']);
+                localStorage.setItem('userID',user['userID']);
+                history.push("/");
+                history.go();
+            }else{
+                message.error("用户名或密码错误");
+            }
+        }
+        )
+    return;
     let success = false;
     let isAdmin = false;
     let ban = false;
@@ -75,8 +97,9 @@ export const login = (data) => {
     return success;
 };
 export const logout = () => {
-    localStorage.removeItem('admin');
-    localStorage.removeItem('user');
+    localStorage.removeItem('username');
+    localStorage.removeItem('userID');
+    localStorage.removeItem('email');
 }
 
 export const Redirect = ()=>{
@@ -84,21 +107,121 @@ export const Redirect = ()=>{
     return <Navigate to="/login"/>
 }
 
+const nonce = 12345;
 export const register = (data)=>{
+    if(data['password'].length <6 || data['password'].length >20){
+        message.error("密码长度为6-20位");
+        return;
+    }
     if(data['password']!==data['confirm']){
         message.error("密码不一致");
         return;
     }
-    if(data['email'].indexOf('@')<0){
-        message.error("邮箱错误");
+
+    if(data['username'].length>20){
+        message.error("用户名长度不得大于20位");
         return;
     }
-    users.push([data['username'],data['password'],false]);
-    message.success("注册成功");
-    history.push("/login");
-    history.go()
+    if(data['email'].indexOf('@')<0){
+        message.error("邮箱格式错误");
+        return;
+    }
+    if(data['email'].length>50){
+        message.error("不接受这么长的邮箱");
+        return;
+    }
+    data['password'] = sha256(data['password'] + nonce.toString()).toString();
+    // console.log(hash);
+    // postRequest_v2()
+    // users.push([data['username'],data['password'],false]);
+    delete data['confirm'];
+    postRequest_v2(base_url+"register",data,
+        (success)=>{
+            if(success){
+                message.success("注册成功");
+                history.push("/login");
+                history.go();
+            }else{
+                message.error("注册失败,用户名或邮箱已被使用");
+            }
+        }
+        );
+
 }
+
 
 export const forget = ()=>{
     message.info("已向注册邮箱发送邮件");
+}
+
+export const getCart = (callback) => {
+    let userID = localStorage.getItem("userID");
+    let password = localStorage.getItem("password");
+    if(!userID || !password){
+        Redirect();
+        return;
+    }
+    postRequest_v2(base_url + "getCart", {'userID': userID, 'password': password},callback);
+
+}
+
+export const updateCart = (cartItem)=>{
+    cartItem['userID'] = localStorage.getItem('userID');
+    postRequest_v2(base_url + "updateCart", cartItem,()=>{});
+}
+export const addCart = (bookID)=>{
+    let userID = localStorage.getItem("userID");
+    if(!userID){
+        history.push("/cart");
+        history.go();
+        return;
+    }
+    const data = {'userID':userID,'password':localStorage.getItem("password"),'bookID':bookID};
+    postRequest_v2(base_url+"/addCart",data,(d)=>{
+        history.push("/cart");
+        history.go();
+        message.success("成功加入购物车");
+    })
+}
+
+export const removeCart = (bookID)=>{
+    let userID = localStorage.getItem("userID");
+    if(!userID){
+        Redirect();
+        return;
+    }
+    const data = {'userID':userID,'bookID':bookID};
+    postRequest_v2(base_url+"/removeCart",data,(d)=>{
+    })
+}
+
+export const getOrder = (callback) => {
+    let userID = localStorage.getItem("userID");
+    let password = localStorage.getItem("password");
+    if(!userID || !password){
+        Redirect();
+        return;
+    }
+    postRequest_v2(base_url + "getOrder", {'userID': userID, 'password': password},callback);
+
+}
+
+export const buyBooks = (books)=>{
+    let userID = localStorage.getItem("userID");
+    let password = localStorage.getItem("password");
+    if(!userID || !password){
+        Redirect();
+        return;
+    }
+    postRequest(base_url + "buyBooks/"+userID+"/"+password, books,
+        (data)=>{
+        if(data){
+            history.push("/order");
+            history.go();
+            message.success("购买成功");
+        }else{
+            message.error("购买失败");
+        }
+        }
+    );
 }

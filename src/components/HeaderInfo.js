@@ -14,7 +14,7 @@ export class HeaderInfo extends React.Component {
         super(props);
         this.state = {show: false};
         this.admin = localStorage.getItem("admin");
-        this.user = localStorage.getItem("user");
+        this.username = localStorage.getItem("username");
         this.handleClick = this.handleClick.bind(this);
     }
 
@@ -81,7 +81,7 @@ export class HeaderInfo extends React.Component {
                             pathname: '/login/'
                         }}
                     >
-                        <Button onClick={logout}>{this.user?"退出登录":"登录"}</Button>
+                        <Button onClick={logout}>{this.username?"退出登录":"登录"}</Button>
                     </Link>
                 </Layout>
                 : null
@@ -92,7 +92,7 @@ export class HeaderInfo extends React.Component {
                 <nav className="navbar navbar-expand-lg navbar-light bg-light">
                     {nav}
                     <div className="user">
-                        <div className="user_hello">Hi,{this.user}</div>
+                        <div className="user_hello">{this.username ? "Hi,"+this.username : "Login"}</div>
                         <a><img className="home_user_image rounded-circle" src={user_image} onClick={this.handleClick}/></a>
                         {select}
                     </div>

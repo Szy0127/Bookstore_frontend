@@ -2,7 +2,8 @@ import React from 'react';
 import "../css/cart.css"
 import {Button,InputNumber,Table} from "antd";
 import {Book} from "./Book";
-import {getCart,getBook} from "../service/BookService";
+import {getBook} from "../service/BookService";
+import {getCart, updateCart, removeCart, buyBooks} from "../service/UserService";
 const CartFooter = function (props) {
     return (
         <div className="fixed-bottom cart_footer">
@@ -16,7 +17,7 @@ const CartFooter = function (props) {
             <div className="cart_footer_item col-lg-3">
                 合计{props.money.toFixed(2)}元
             </div>
-            <Button className="cart_footer_item">结算</Button>
+            <Button className="cart_footer_item" onClick={props.handleBuy}>结算</Button>
         </div>
     )
 }
@@ -26,33 +27,37 @@ export class CartList extends React.Component {
     constructor(props) {
         super(props);
 
-        let checked = [];
-        let amounts = [];//单个物品
-        let books = [];
-        for (let cart of this.props.carts) {
-            checked.push(false);
-            amounts.push(cart[1]);
-            books.push(getBook(cart[0]));
-        }
-        this.state = {all:false,checked: checked, amounts: amounts,books: books};
+
+        this.state = {cart:[],all:false,checked: [],books: []};
+
         this.handleAll = this.handleAll.bind(this);
         this.handleRemoveMulti = this.handleRemoveMulti.bind(this);
+        this.handleBuy = this.handleBuy.bind(this);
     }
-    getMoney(){
-        let money = 0;
-        for(let i in this.state.books){
+
+    async componentDidMount() {
+        getCart((data)=>{
+            data.reverse();
+            this.setState({cart:data, checked: new Array(data.length).fill(false)});
+        }
+        )
+    }
+
+    getPrice(){
+        let price = 0;
+        for(let i in this.state.cart){
             if(this.state.checked[i]){
-                money += parseFloat(this.state.books[i][5]) * this.state.amounts[i];
+                price += parseFloat(this.state.cart[i]['book']['price']) * this.state.cart[i]['amount'];
             }
         }
-        return money;
+        return price;
     }
 
     getNumber(){
         let amount = 0;
-        for(let i in this.state.books){
+        for(let i in this.state.cart){
             if(this.state.checked[i]){
-                amount += this.state.amounts[i];
+                amount += this.state.cart[i]['amount'];
             }
         }
         return amount;
@@ -80,15 +85,14 @@ export class CartList extends React.Component {
         this.setState({all: all, checked: checked});
     }
 
-    getRemovedState(index) {
-        let books = this.state.books;
-        let checked = this.state.checked;
-        let amounts = this.state.amounts;
-        books.splice(index, 1);
-        checked.splice(index, 1);
-        amounts.splice(index, 1);
-        return {checked: checked,books:books,amounts:amounts};
-    }
+    // getRemovedState(index) {
+    //     let books = this.state.books;
+    //     let checked = this.state.checked;
+    //     books.splice(index, 1);
+    //     checked.splice(index, 1);
+        // amounts.splice(index, 1);
+        // return {checked: checked,books:books};//,amounts:amounts};
+    // }
 
     handleRemoveOne(index, e) {
         e.preventDefault();
@@ -96,7 +100,11 @@ export class CartList extends React.Component {
         if(!del){
             return;
         }
-        this.setState(this.getRemovedState(index));
+        removeCart(this.state.cart[index]['book']['bookID']);
+        getCart((data)=> {
+            data.reverse();
+            this.setState({cart: data, checked: new Array(data.length).fill(false)});
+        })
     }
 
     handleRemoveMulti(e) {
@@ -105,41 +113,68 @@ export class CartList extends React.Component {
         if(!del){
             return;
         }
-        let books = this.state.books;
         let checked = this.state.checked;
         for (let index = 0; index < checked.length; index++) {
             if (checked[index]) {
-                books.splice(index, 1);
+                // books.splice(index, 1);
                 checked.splice(index, 1);
                 index--
+                removeCart(this.state.cart[index]['book']['bookID']);
+                getCart((data)=>
+                    this.setState({cart:data,checked:new Array(data.length).fill(false)})
+                )
             }
         }
-        this.setState({books:books,checked:checked});
+        // this.setState({books:books,checked:checked});
     }
 
     handleAmount(index,amount){
-        let amounts = this.state.amounts;
-        amounts[index] = parseInt(amount);
-        console.log(index,amount);
-        this.setState({amounts:amounts});
+        let cart = {};
+        cart['bookID'] = this.state.cart[index]['book']['bookID'];
+        cart['amount'] = parseInt(amount);
+        this.state.cart[index]['amount'] = parseInt(amount);
+        updateCart(cart);
+        this.setState({cart:this.state.cart});
+
     }
 
+    handleBuy(e){
+        e.preventDefault();
+        let buy = window.confirm("是否立刻下单");
+        if(!buy){
+            return;
+        }
+        let checked = this.state.checked;
+        let buys = [];
+        for (let index in checked) {
+            if (checked[index]) {
+                let item = {};
+                item['bookID'] = this.state.cart[index]['book']['bookID'];
+                item['amount'] = this.state.cart[index]['amount'];
+                buys.push(item);
+            }
+        }
+        buyBooks(buys);
+    }
 
     render() {
 
+
         const dataSource = [];
-        for (let index in this.state.books) {
-            let book = this.state.books[index];
+        for (let index in this.state.cart) {
+            let book = this.state.cart[index]['book'];
+            let amount = this.state.cart[index]['amount'];
             dataSource.push(
                 {
                     checked:this.state.checked[index],
-                    book: book[0],
-                    unitPrice: book[5],
-                    amount:this.state.amounts[index],
-                    totalPrice:(parseFloat(book[5])*this.state.amounts[index]).toFixed(2)
+                    book: book,
+                    unitPrice: book['price'],
+                    amount:amount,
+                    totalPrice:(parseFloat(book['price'])*amount).toFixed(2)
                 }
             )
         }
+        console.log(dataSource);
 
         const columns = [
             {
@@ -153,7 +188,7 @@ export class CartList extends React.Component {
                 title: '商品信息',
                 dataIndex: 'book',
                 key: 'book',
-                render:(text)=><Book bookId={text} book_width={300}/>
+                render:(text)=><Book book={text} book_width={300}/>
             },
             {
                 title: '单价',
@@ -164,7 +199,7 @@ export class CartList extends React.Component {
                 title: '数量',
                 dataIndex: 'amount',
                 key: 'amount',
-                render:(text,record,index)=><InputNumber size="large" min={1} max={999}  value={this.state.amounts[index]} onChange={this.handleAmount.bind(this,index)}/>
+                render:(text,record,index)=><InputNumber size="large" min={1} max={999}  value={this.state.cart[index]['amount']} onChange={this.handleAmount.bind(this,index)}/>
             },
             {
                 title: '总价',
@@ -181,29 +216,12 @@ export class CartList extends React.Component {
         ];
 
 
+
         return (
             <React.Fragment>
-                {/*<table className="table">*/}
-                {/*    <thead>*/}
-                {/*    <tr>*/}
-                {/*        <th scope="col">*/}
-                {/*            <input type="checkbox" onChange={this.handleAll} checked={this.state.all}/>*/}
-                {/*            全选*/}
-                {/*        </th>*/}
-                {/*        <th scope="col">商品信息</th>*/}
-                {/*        <th scope="col">单价</th>*/}
-                {/*        <th scope="col">数量</th>*/}
-                {/*        <th scope="col">金额</th>*/}
-                {/*        <th scope="col">操作</th>*/}
-                {/*    </tr>*/}
-                {/*    </thead>*/}
-                {/*    <tbody>*/}
-                {/*    {carts}*/}
-                {/*    </tbody>*/}
-                {/*</table>*/}
                 <Table dataSource={dataSource} columns={columns}/>
-                <CartFooter number={this.getNumber()} money={this.getMoney()} all={this.state.all}
-                            handleRemove={this.handleRemoveMulti} handleAll={this.handleAll}/>
+                <CartFooter number={this.getNumber()} money={this.getPrice()} all={this.state.all}
+                            handleRemove={this.handleRemoveMulti} handleAll={this.handleAll} handleBuy={this.handleBuy}/>
             </React.Fragment>
         );
     }

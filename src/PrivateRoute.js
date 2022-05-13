@@ -4,10 +4,14 @@ import {Redirect} from "./service/UserService";
 export default class PrivateRoute extends React.Component{
     constructor(props) {
         super(props);
-        this.auth = localStorage.getItem("user");
-        if(this.props.admin && ! localStorage.getItem("admin")){
+        if (localStorage.getItem("username")) {
+            this.auth = true;
+        }else{
             this.auth = false;
         }
+        // if(this.props.admin && ! localStorage.getItem("admin")){
+        //     this.auth = false;
+        // }
     }
 
 

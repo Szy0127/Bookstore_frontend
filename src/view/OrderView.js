@@ -3,7 +3,7 @@ import {Layout} from 'antd'
 import {HeaderInfo} from "../components/HeaderInfo";
 import {OrderList} from "../components/OrderList";
 import '../css/order.css'
-import {getOrder} from "../service/BookService";
+import {getOrder} from "../service/UserService";
 import {MyMenu} from "../components/Menu";
 
 class OrderView extends React.Component {
@@ -11,12 +11,38 @@ class OrderView extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {show: 0};
+        this.state = {show: 0,orders:[]};
         this.handleChange = this.handleChange.bind(this);
+    }
+
+    componentDidMount() {
+        getOrder(
+            (data) => {
+                data.reverse();
+                this.setState({orders: data})
+            }
+        );
     }
 
     handleChange(key) {
         this.setState({show: key});
+    }
+
+    getSelectOrders(){
+        // eslint-disable-next-line default-case
+        switch (parseInt(this.state.show)){
+            case 0:
+                return this.state.orders;
+            case 1:case 2:case 3:case 4:
+                let orders = [];
+                for(let o of this.state.orders){
+                    if(parseInt(o['phase'])=== parseInt(this.state.show)){
+                        orders.push(o);
+                    }
+                }
+                return orders;
+        }
+        return [];
     }
 
 
@@ -28,7 +54,7 @@ class OrderView extends React.Component {
                 <HeaderInfo/>
                 <div className='container'>
                     <MyMenu types={types} handleChange={this.handleChange}/>
-                    <OrderList orders={getOrder(this.state.show)}/>
+                    <OrderList orders={this.getSelectOrders()}/>
                 </div>
             </Layout>
         );

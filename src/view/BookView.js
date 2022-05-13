@@ -11,12 +11,13 @@ function BookView(props) {
 
     const query = location.search;
     const arr = query.split('&');
-    const bookId = arr[0].substr(4);
+    const bookID = arr[0].substr(4);
+
     return (
         <Layout>
             <HeaderInfo/>
             <div className='container'>
-                <BookDetail bookId={bookId}/>
+                <BookDetail bookID={bookID}/>
             </div>
         </Layout>
     );

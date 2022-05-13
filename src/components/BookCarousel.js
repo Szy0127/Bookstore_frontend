@@ -18,7 +18,7 @@ export class BookCarousel extends React.Component {
                         pathname: '/bookDetails/',
                         search: '?id=' + id[i]
                     }}
-                    target="_blank"
+                    //target="_blank"
                 >
                     <img className="carousel_img" alt={i} src={img}/>
                 </Link>
