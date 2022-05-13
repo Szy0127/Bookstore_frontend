@@ -28,7 +28,7 @@ export class HeaderInfo extends React.Component {
         const navTitle = ['Books', 'My Cart', 'My Orders', 'My Profile'];
         let navItem = [];
         for (let i = 0; i < navHref.length; i++) {
-            if (i === 0) {
+            if (i === this.props.navID) {
                 navItem.push(
                     <a className="nav-link active" aria-current="page" href={navHref[i]}>{navTitle[i]}</a>
                 )

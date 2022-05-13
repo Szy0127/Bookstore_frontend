@@ -35,7 +35,7 @@ class ProfileView extends React.Component {
         const contents = [<UserInfo/>,<Security/>,<Alipay/>,<Address/>,<Website/>];
         return (
             <Layout>
-                <HeaderInfo/>
+                <HeaderInfo navID={3}/>
                 <div className='container'>
                     <MyMenu types={types} handleChange={this.handleChange}/>
                     {contents[this.state.show]}

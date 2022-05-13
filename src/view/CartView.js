@@ -19,7 +19,7 @@ class CartView extends React.Component {
     render() {
         return (
             <Layout>
-                <HeaderInfo/>
+                <HeaderInfo navID={1}/>
                 <div className='container'>
                     {/*<CartList cart={this.state.cart}/>*/}
                     <CartList/>

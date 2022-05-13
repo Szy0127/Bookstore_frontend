@@ -51,7 +51,7 @@ class OrderView extends React.Component {
 
         return (
             <Layout>
-                <HeaderInfo/>
+                <HeaderInfo navID={2}/>
                 <div className='container'>
                     <MyMenu types={types} handleChange={this.handleChange}/>
                     <OrderList orders={this.getSelectOrders()}/>

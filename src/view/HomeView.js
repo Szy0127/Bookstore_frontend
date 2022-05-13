@@ -45,7 +45,7 @@ class HomeView extends React.Component {
 
         return (
             <Layout>
-                <HeaderInfo/>
+                <HeaderInfo navID={0}/>
                 <div className='container'>
                     <SearchBook books={this.books} handleSearch={this.handleSearch} handleClear={this.handleClear}/>
                     <BookCarousel/>
