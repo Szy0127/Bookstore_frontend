@@ -101,9 +101,17 @@ export class CartList extends React.Component {
             return;
         }
         removeCart(this.state.cart[index]['book']['bookID']);
+        let cart = [];
+        for(let c in this.state.cart){
+            if(c==index){
+                continue;
+            }
+            cart.push(this.state.cart[c]);
+        }
+        this.setState({cart: cart});
         getCart((data)=> {
             data.reverse();
-            this.setState({cart: data, checked: new Array(data.length).fill(false)});
+            //this.setState({cart: data, checked: new Array(data.length).fill(false)});
         })
     }
 

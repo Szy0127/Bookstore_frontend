@@ -44,62 +44,63 @@ export const login = (data) => {
 
     data['password'] = sha256(data['password'] + nonce).toString();
     postRequest_v2(base_url+"login",data,
-        (user)=>{
-            if(user){
-                console.log(user);
-                localStorage.setItem('username',user['username']);
-                localStorage.setItem('password',user['password']);
-                localStorage.setItem('email',user['email']);
-                localStorage.setItem('userID',user['userID']);
+        (data)=>{
+            console.log(data);
+            if(data.success) {
+                // console.log(data.data);
+                // console.log(JSON.stringify(data.data));
+                localStorage.setItem('user', JSON.stringify(data.data));
+                // localStorage.setItem('user', data.data);
+                message.success(data.msg);
                 history.push("/");
                 history.go();
-            }else{
-                message.error("用户名或密码错误");
+            }
+            else{
+                message.error(data.msg);
             }
         }
         )
     return;
-    let success = false;
-    let isAdmin = false;
-    let ban = false;
-    if (data['auth'] === "admin") {
-        isAdmin = true;
-        if (data['username'] === admin[0] && data['password'] === admin[1]) {
-            localStorage.setItem('admin', "1");
-            success = true;
-        }
-    } else {
-
-        for (let user of users) {
-            if (data['username'] === user[0] && data['password'] == user[1]) {
-                if(user[2]){
-                    ban = true;
-                }
-                success = true;
-                break;
-            }
-        }
-    }
-    if (success) {
-        if(!ban){
-            localStorage.setItem('user', data['username']);
-            message.success("登录成功");
-            const path = isAdmin ? "/admin":"/";
-            history.push(path);
-            history.go();
-        }
-        message.error("该用户已被禁用");
-
-    } else {
-
-        message.error("用户名或密码错误");
-    }
-    return success;
+    // let success = false;
+    // let isAdmin = false;
+    // let ban = false;
+    // if (data['auth'] === "admin") {
+    //     isAdmin = true;
+    //     if (data['username'] === admin[0] && data['password'] === admin[1]) {
+    //         localStorage.setItem('admin', "1");
+    //         success = true;
+    //     }
+    // } else {
+    //
+    //     for (let user of users) {
+    //         if (data['username'] === user[0] && data['password'] == user[1]) {
+    //             if(user[2]){
+    //                 ban = true;
+    //             }
+    //             success = true;
+    //             break;
+    //         }
+    //     }
+    // }
+    // if (success) {
+    //     if(!ban){
+    //         localStorage.setItem('user', data['username']);
+    //         message.success("登录成功");
+    //         const path = isAdmin ? "/admin":"/";
+    //         history.push(path);
+    //         history.go();
+    //     }
+    //     message.error("该用户已被禁用");
+    //
+    // } else {
+    //
+    //     message.error("用户名或密码错误");
+    // }
+    // return success;
 };
 export const logout = () => {
-    localStorage.removeItem('username');
-    localStorage.removeItem('userID');
-    localStorage.removeItem('email');
+    localStorage.removeItem('user');
+    postRequest_v2(base_url + "logout", {},()=>{});
 }
 
 export const Redirect = ()=>{
@@ -155,28 +156,31 @@ export const forget = ()=>{
 }
 
 export const getCart = (callback) => {
-    let userID = localStorage.getItem("userID");
-    let password = localStorage.getItem("password");
-    if(!userID || !password){
+    let user = JSON.parse(localStorage.getItem("user"));
+    if(!user){
         Redirect();
         return;
     }
-    postRequest_v2(base_url + "getCart", {'userID': userID, 'password': password},callback);
+    postRequest_v2(base_url + "getCart", {'userID': user.userID},callback);
 
 }
 
 export const updateCart = (cartItem)=>{
-    cartItem['userID'] = localStorage.getItem('userID');
+    let user = JSON.parse(localStorage.getItem("user"));
+    if(!user){
+        Redirect();
+        return;
+    }
+    cartItem['userID'] = user.userID
     postRequest_v2(base_url + "updateCart", cartItem,()=>{});
 }
 export const addCart = (bookID)=>{
-    let userID = localStorage.getItem("userID");
-    if(!userID){
-        history.push("/cart");
-        history.go();
+    let user = JSON.parse(localStorage.getItem("user"));
+    if(!user){
+        Redirect();
         return;
     }
-    const data = {'userID':userID,'password':localStorage.getItem("password"),'bookID':bookID};
+    const data = {'userID':user.userID,'bookID':bookID};
     postRequest_v2(base_url+"/addCart",data,(d)=>{
         history.push("/cart");
         history.go();
@@ -185,35 +189,34 @@ export const addCart = (bookID)=>{
 }
 
 export const removeCart = (bookID)=>{
-    let userID = localStorage.getItem("userID");
-    if(!userID){
+    let user = JSON.parse(localStorage.getItem("user"));
+    if(!user){
         Redirect();
         return;
     }
-    const data = {'userID':userID,'bookID':bookID};
+    const data = {'userID':user.userID,'bookID':bookID};
     postRequest_v2(base_url+"/removeCart",data,(d)=>{
     })
 }
 
 export const getOrder = (callback) => {
-    let userID = localStorage.getItem("userID");
-    let password = localStorage.getItem("password");
-    if(!userID || !password){
+    let user = JSON.parse(localStorage.getItem("user"));
+    if(!user){
         Redirect();
         return;
     }
-    postRequest_v2(base_url + "getOrder", {'userID': userID, 'password': password},callback);
+    postRequest_v2(base_url + "getOrder", {'userID': user.userID},callback);
 
 }
 
 export const buyBooks = (books)=>{
-    let userID = localStorage.getItem("userID");
-    let password = localStorage.getItem("password");
-    if(!userID || !password){
+    let user = JSON.parse(localStorage.getItem("user"));
+    if(!user){
         Redirect();
         return;
     }
-    postRequest(base_url + "buyBooks/"+userID+"/"+password, books,
+
+    postRequest(base_url + "buyBooks/"+user.userID, books,
         (data)=>{
         if(data){
             history.push("/order");
