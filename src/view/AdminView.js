@@ -14,9 +14,10 @@ class AdminView extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state={show:0}
+        this.state={show:1}
         this.handleChange = this.handleChange.bind(this);
     }
+
 
     render() {
         const types = ['书籍管理', '用户管理','订单管理','统计'];

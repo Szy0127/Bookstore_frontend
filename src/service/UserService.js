@@ -28,7 +28,26 @@ let users = [
     ['kkkkk', 'kkkkk', false]
 ];
 
-export const getUsers = () => users;
+export const getUsers = (callback) => {
+    let user = JSON.parse(localStorage.getItem("user"));
+    if(!user){
+        Redirect();
+        return;
+    }
+    if(!user.admin){
+        message.error("没有权限");
+    }
+    postRequest_v2(base_url + "getUsers", {},callback);
+}
+
+export const banUser = (userID)=>{//实际上是改状态
+    let user = JSON.parse(localStorage.getItem("user"));
+    if(!user){
+        Redirect();
+        return;
+    }
+    postRequest_v2(base_url + "banUser", {userID:userID},()=>{});
+}
 
 let userConsumed = [
     ['szy0127', 1234],

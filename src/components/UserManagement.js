@@ -1,26 +1,35 @@
 import {Layout, Table, Button} from "antd";
-import {getUsers} from "../service/UserService";
+import {getUsers,banUser} from "../service/UserService";
 import React from "react";
+import {getBook} from "../service/BookService";
 
 export class UserManagement extends React.Component {
 
     constructor(props) {
         super(props);
-        const users = getUsers();
-        this.state = {users:users};
+        this.state = {users:null};
     }
 
-    handleStatus(user){
+    componentDidMount() {
+        getUsers((data)=>{
+                this.setState({users:data});
+            }
+        );
+    }
+
+    handleStatus(ban){
+        console.log(ban);
         let users = this.state.users;
-        for(let index in users){
-            if(users[index][0]===user['name']){
-                if(!users[index][2]){
+        for(let user of users){
+            if(user.userID===ban.userID){
+                if(!user.ban){
                     let del = window.confirm("确认禁用此用户吗？");
                     if(!del){
                         return;
                     }
                 }
-                users[index][2] = !users[index][2];
+                banUser(user.userID);
+                user.ban = !user.ban;
                 break;
             }
         }
@@ -28,11 +37,15 @@ export class UserManagement extends React.Component {
     }
     render() {
         const dataSource = [];
+        if(!this.state.users){
+            return <div/>;
+        }
         for(let user of this.state.users){
             dataSource.push(
                 {
-                    name:user[0],
-                    status:user[2]
+                    userID:user.userID,
+                    name:user.username,
+                    status:user.ban
                 }
             )
         }

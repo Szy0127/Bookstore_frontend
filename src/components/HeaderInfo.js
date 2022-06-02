@@ -67,7 +67,7 @@ export class HeaderInfo extends React.Component {
                     >
                         <Button>个人设置</Button>
                     </Link>
-                    {this.user.admin ?
+                    {this.user && this.user.admin ?
                         <Link
                             to={{
                                 pathname: '/admin/'
