@@ -44,19 +44,22 @@ export const login = (data) => {
 
     data['password'] = sha256(data['password'] + nonce).toString();
     postRequest_v2(base_url+"login",data,
-        (data)=>{
-            console.log(data);
-            if(data.success) {
+        (dataret)=>{
+            // console.log(data);
+            if(dataret.success) {
                 // console.log(data.data);
                 // console.log(JSON.stringify(data.data));
-                localStorage.setItem('user', JSON.stringify(data.data));
+                if(data['auth'] !== "admin"){//如果管理员用非管理员登录 认为是非管理员
+                    dataret.data.admin = false;
+                }
+                localStorage.setItem('user', JSON.stringify(dataret.data));
                 // localStorage.setItem('user', data.data);
-                message.success(data.msg);
+                message.success(dataret.msg);
                 history.push("/");
                 history.go();
             }
             else{
-                message.error(data.msg);
+                message.error(dataret.msg);
             }
         }
         )
