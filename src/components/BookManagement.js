@@ -1,5 +1,5 @@
-import {Button, Form, Input, InputNumber, Layout, Select, Table} from "antd";
-import {getBooks,addBook,removeBook} from "../service/BookService";
+import {Button, Form, Image, Input, InputNumber, Layout, Select, Table} from "antd";
+import {getBooks,addBook,removeBook,updateBook} from "../service/BookService";
 import React from "react";
 import {SearchBook} from "./SearchBook";
 
@@ -76,19 +76,24 @@ class BookTable extends React.Component {
         if (rowIndex === this.state.editRow || this.state.editRow === -1) {
             return;
         }
+        console.log(this.is_editing_books[this.state.editRow]);
+        let del = window.confirm("确认修改吗？");
+        if(!del){
+            this.props.updateBook(null);
+        }else{
+            this.props.updateBook(this.is_editing_books[this.state.editRow]);
+        }
         this.setState({editRow: -1});
-        // console.log("close",this.is_editing_books[0][2]);
-        this.props.updateBooks(this.is_editing_books);
     }
 
-    onChange(key, col, e) {//如果每输入一次就更新state 会导致排序+输入的情况下 输入未完成表格就变了
-        // console.log(key,col,e.target.value);
+    onChange(book, col, e) {//如果每输入一次就更新state 会导致排序+输入的情况下 输入未完成表格就变了
         for(let index in this.is_editing_books){
-            if(this.is_editing_books[index][0]==key){
-                this.is_editing_books[index][col + 1] = e.target.value;
+            if(this.is_editing_books[index].bookID===book.bookID){
+                this.is_editing_books[index][this.props.headerKeys[col]] = e.target.value;
                 break;
             }
         }
+        // console.log(this.is_editing_books);
     }
 
     handleRemove(book){
@@ -133,11 +138,11 @@ class BookTable extends React.Component {
                     dataIndex: this.props.headerKeys[i],
                     key: this.props.headerKeys[i],
                     onDoubleClick: this.showEditor,
-                    render: (text, record, index) =>
-                        // this.state.editRow == index && i != 0 && !this.props.closeInput? <Input defaultValue={text} onChange={this.onChange.bind(this, index, parseInt(i))}/> : text
+                    render: (text, book, index) =>
                         this.state.editRow == index && i!=0 ?
-                            <Input defaultValue={text} onChange={this.onChange.bind(this, record['key'], parseInt(i))} /> :
-                                text
+                            <Input defaultValue={text} onChange={this.onChange.bind(this, book, parseInt(i))} /> :
+                            i!= 8 ? text : <Image src = {text} alt={text}/>
+
                 }
             )
         }
@@ -192,11 +197,18 @@ export class BookManagement extends React.Component {
         this.state = {savedBooks: null, books: null ,searchName: "",closeInput:false};
         this.handleSearch = this.handleSearch.bind(this);
         this.handleClear = this.handleClear.bind(this);
-        this.updateBooks = this.updateBooks.bind(this);
+        this.updateBook = this.updateBook.bind(this);
         this.handleRemove = this.handleRemove.bind(this);
         this.handleAdd = this.handleAdd.bind(this);
     }
 
+    copyData(data){
+        let res = data.slice();
+        for(let i in res){
+            res[i] = JSON.parse(JSON.stringify(res[i]));
+        }
+        return res;
+    }
     componentDidMount(){
         getBooks((data) => {
             let book  = data[0];
@@ -210,7 +222,7 @@ export class BookManagement extends React.Component {
                 }
                 this.headerKeys.push(key);
             }
-            this.setState({savedBooks: data,books:data.slice()});
+            this.setState({savedBooks: data,books:this.copyData(data)});
         })
     }
 
@@ -235,7 +247,7 @@ export class BookManagement extends React.Component {
         // this.setState({books:books,savedBooks:saved});
         addBook(book);
         getBooks((data) => {
-            this.setState({savedBooks: data,books:data.slice()});
+            this.setState({savedBooks: data,books:this.copyData(data)});
         });
 
     }
@@ -243,7 +255,7 @@ export class BookManagement extends React.Component {
     handleRemove(book){
         removeBook(book.bookID);
         getBooks((data) => {
-            this.setState({savedBooks: data,books:data.slice()});
+            this.setState({savedBooks: data,books:this.copyData(data)});
         });
         // let saved = this.state.savedBooks;
         // for(let index in saved){
@@ -254,25 +266,28 @@ export class BookManagement extends React.Component {
         // }
         // this.setState({books:books,savedBooks:saved});
     }
-    updateBooks(books) {
-        // console.log(books[0][2],"?");
-        let saved = this.state.savedBooks;
-        for(let index in saved){
-            for(let book of books){
-                if(book[0] === saved[index][0]){
-                    saved[index] = book.slice();
-                    break;
-                }
-            }
-        }
-        this.setState({books: books, savedBooks: saved});
+    updateBook(book) {
+        console.log(book);
+        updateBook(book);
+        // let saved = this.state.savedBooks;
+        // for(let index in saved){
+        //     for(let book of books){
+        //         if(book[0] === saved[index][0]){
+        //             saved[index] = book.slice();
+        //             break;
+        //         }
+        //     }
+        // }
+        getBooks((data) => {
+            this.setState({savedBooks: data,books:this.copyData(data)});
+        });
     }
 
     render() {
         if(!this.state.savedBooks){
             return <div/>;
         }
-        console.log('render savedBooks:', this.state.savedBooks);
+        // console.log('render savedBooks:', this.state.savedBooks);
         return (
 
             <Layout>
@@ -280,7 +295,7 @@ export class BookManagement extends React.Component {
                 <SearchBook initialBooks={this.state.savedBooks} books={this.state.books}
                             handleSearch={this.handleSearch} handleClear={this.handleClear}/>
                 {/*<BookTable closeInput={this.state.closeInput}books={this.state.books} updateBooks={this.updateBooks} handleRemove={this.handleRemove}/>*/}
-                <BookTable headerTitles={this.headerTitles} headerKeys={this.headerKeys}books={this.state.books} updateBooks={this.updateBooks} handleRemove={this.handleRemove}/>
+                <BookTable headerTitles={this.headerTitles} headerKeys={this.headerKeys}books={this.state.books} updateBook={this.updateBook} handleRemove={this.handleRemove}/>
             </Layout>
         )
     }

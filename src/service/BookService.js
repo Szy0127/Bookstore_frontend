@@ -1,4 +1,4 @@
-import {base_url, postRequest_v2} from "../utils/ajax";
+import {base_url, postRequest_v2,postRequest} from "../utils/ajax";
 import {message} from "antd";
 export const getBooks = (callback) =>{
     postRequest_v2(base_url+"getBooks","",callback);
@@ -69,6 +69,16 @@ export const addBook = (book)=>{
 
 export const removeBook = (bookID)=>{
     postRequest_v2(base_url+"removeBook",{'bookID':bookID},(data)=>{
+        if(data.success){
+            message.success(data.msg);
+        }else{
+            message.error(data.msg);
+        }
+    });
+}
+
+export const updateBook = (book)=>{
+    postRequest(base_url+"updateBook",book,(data)=>{
         if(data.success){
             message.success(data.msg);
         }else{
