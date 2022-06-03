@@ -14,7 +14,7 @@ class AdminView extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state={show:1}
+        this.state={show:0}
         this.handleChange = this.handleChange.bind(this);
     }
 

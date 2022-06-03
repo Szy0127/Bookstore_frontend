@@ -110,21 +110,21 @@ class BookTable extends React.Component {
         //虽然可以利用浅拷贝的数据共享内存来避免复杂的调用关系 但因为数据之后是后端给的  不确定具体格式
         this.is_editing_books = [];
         for (let book of is_editing_books_shallow) {
-            this.is_editing_books.push(book.slice());
+            this.is_editing_books.push(JSON.parse(JSON.stringify(book)));//深拷贝对象
         }
         // console.log(this.is_editing_books[0][2]);
         const dataSource = [];
         for (let book of this.props.books) {
             dataSource.push(
                 {
-                    key: book[1],//方便定位
-                    name: book[2],
-                    type: book[3],
-                    author: book[4],
-                    price: book[5],
-                    description: book[6],
-                    storage: book[7],
-                    image: book[8],//展示text
+                    key: book.bookID,//方便定位
+                    name: book.name,
+                    type: book.type,
+                    author: book.author,
+                    price: book.price,
+                    description: book.description,
+                    storage: book.inventory,
+                    image: book.image,//展示text
                 }
             )
         }
@@ -188,16 +188,23 @@ export class BookManagement extends React.Component {
     constructor(props) {
         super(props);
 
-        const books = getBooks();
+        // const books = getBooks();
         this.headerTitles = ['序号', '书名', '分类', '作者', '价格', '描述', '库存量', '封面'];
         this.headerKeys = ['key', 'name', 'type', 'author', 'price', 'description', 'storage', 'image'];
         this.editRow = -1;
-        this.state = {savedBooks: getBooks(), books: books.slice(), searchName: "",closeInput:false};
+        this.state = {savedBooks: null, books: null ,searchName: "",closeInput:false};
         this.handleSearch = this.handleSearch.bind(this);
         this.handleClear = this.handleClear.bind(this);
         this.updateBooks = this.updateBooks.bind(this);
         this.handleRemove = this.handleRemove.bind(this);
         this.handleAdd = this.handleAdd.bind(this);
+    }
+
+    componentDidMount(){
+        getBooks((data) => {
+            console.log(data);
+            this.setState({savedBooks: data,books:data.slice()});
+        })
     }
 
     handleSearch(books) {
@@ -253,7 +260,10 @@ export class BookManagement extends React.Component {
     }
 
     render() {
-        // console.log('render savedBooks:', this.state.savedBooks);
+        if(!this.state.savedBooks){
+            return <div/>;
+        }
+        console.log('render savedBooks:', this.state.savedBooks);
         return (
 
             <Layout>
