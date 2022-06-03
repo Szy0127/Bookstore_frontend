@@ -1,5 +1,5 @@
 import {Button, Form, Input, InputNumber, Layout, Select, Table} from "antd";
-import {getBooks} from "../service/BookService";
+import {getBooks,addBook,removeBook} from "../service/BookService";
 import React from "react";
 import {SearchBook} from "./SearchBook";
 
@@ -24,12 +24,7 @@ const tailLayout = {
 const BookForm = (props) => {
     const [form] = Form.useForm();
     const onFinish = (values) => {
-        // console.log(values);
-        let book = [];
-        for(let key of props.keys){
-            book.push(values[key]);
-        }
-        props.handleAdd(book);
+        props.handleAdd(values);
         onReset()
     };
     const onReset = () => {
@@ -47,7 +42,7 @@ const BookForm = (props) => {
                     },
                 ]}
             >
-                {i==3||i==5?<InputNumber min={0}/>:<Input/>}
+                {i==4||i==6?<InputNumber min={0}/>:<Input/>}
             </Form.Item>
         )
     }
@@ -101,7 +96,7 @@ class BookTable extends React.Component {
         if(!del){
             return;
         }
-        this.props.handleRemove(book['key']);
+        this.props.handleRemove(book);
         this.setState({editRow:-1});
     }
 
@@ -230,32 +225,34 @@ export class BookManagement extends React.Component {
     }
 
     handleAdd(book){
-        book.unshift(this.state.savedBooks.length+1);
-        book.unshift(this.state.savedBooks.length+1);
-        // console.log(book);
-        let books = this.state.books;
-        let saved = this.state.savedBooks;
-        books.unshift(book);
-        saved.unshift(book);//默认插在第一行 可以按序号排序  后续可以通过后端再排序
-        this.setState({books:books,savedBooks:saved});
+        // book.unshift(this.state.savedBooks.length+1);
+        // book.unshift(this.state.savedBooks.length+1);
+        // // console.log(book);
+        // let books = this.state.books;
+        // let saved = this.state.savedBooks;
+        // books.unshift(book);
+        // saved.unshift(book);//默认插在第一行 可以按序号排序  后续可以通过后端再排序
+        // this.setState({books:books,savedBooks:saved});
+        addBook(book);
+        getBooks((data) => {
+            this.setState({savedBooks: data,books:data.slice()});
+        });
+
     }
 
-    handleRemove(key){
-        let books = this.state.books;
-        for(let index in books){
-            if(books[index][0]==key){
-                books.splice(index,1);
-                break;
-            }
-        }
-        let saved = this.state.savedBooks;
-        for(let index in saved){
-            if(saved[index][0]==key){
-                saved.splice(index,1);
-                break;
-            }
-        }
-        this.setState({books:books,savedBooks:saved});
+    handleRemove(book){
+        removeBook(book.bookID);
+        getBooks((data) => {
+            this.setState({savedBooks: data,books:data.slice()});
+        });
+        // let saved = this.state.savedBooks;
+        // for(let index in saved){
+        //     if(saved[index][0]==key){
+        //         saved.splice(index,1);
+        //         break;
+        //     }
+        // }
+        // this.setState({books:books,savedBooks:saved});
     }
     updateBooks(books) {
         // console.log(books[0][2],"?");

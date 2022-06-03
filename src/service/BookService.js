@@ -1,5 +1,5 @@
 import {base_url, postRequest_v2} from "../utils/ajax";
-
+import {message} from "antd";
 export const getBooks = (callback) =>{
     postRequest_v2(base_url+"getBooks","",callback);
 }
@@ -56,3 +56,23 @@ export const getBookSaled  = ()=> bookSaled;
 // export const delCart = (i)=>{
 //     cart.splice(cart.indexOf(i),1);
 // }
+
+export const addBook = (book)=>{
+    postRequest_v2(base_url+"addBook",book,(data)=>{
+        if(data.success){
+            message.success(data.msg);
+        }else{
+            message.error(data.msg);
+        }
+    });
+}
+
+export const removeBook = (bookID)=>{
+    postRequest_v2(base_url+"removeBook",{'bookID':bookID},(data)=>{
+        if(data.success){
+            message.success(data.msg);
+        }else{
+            message.error(data.msg);
+        }
+    });
+}
