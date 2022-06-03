@@ -1,7 +1,6 @@
 import { Pie } from '@ant-design/plots';
 import React from "react";
-import {getBook,getBookSaled} from "../service/BookService";
-import {getUserConsumed} from "../service/UserService";
+import {getUserConsumed,getBookSaled} from "../service/UserService";
 
 let config = {
     appendPadding: 10,
@@ -21,41 +20,61 @@ let config = {
         },
     ],
 };
-const BookPie = () => {
-    let data = []
-    for(let book of getBookSaled()){
-        data.push(
-            {
-                type:getBook(book[0])[2],
-                value:book[1]
-            }
-        )
-    }
-    config.data = data;
-    return <Pie {...config} />;
-};
-const UserPie = () => {
-    let data = []
-    for(let user of getUserConsumed()){
-        data.push(
-            {
-                type:user[0],
-                value:user[1]
-            }
-        )
-    }
-    config.data = data;
-    return <Pie {...config} />;
-};
+
+
 export  class AdminStatistic extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {config:null}
+        this.type_now = null;
     }
-    render() {
-        console.log(this.props.type);
+
+    getData() {
+        console.log(1);
         if(this.props.type=="book"){
-            return <BookPie/>
+            getBookSaled((books)=> {
+                let data = [];
+                for (let book of books) {
+                    data.push(
+                        {
+                            type: book.book.name,
+                            value: book.amount
+                        }
+                    )
+                }
+                config.data = data;
+                this.setState({config: config});
+            });
+            return;
         }
-        return <UserPie/>
+        if(this.props.type=="user"){
+            getUserConsumed((users)=> {
+                let data = [];
+                for (let user of users) {
+                    data.push(
+                        {
+                            type: user.user.username,
+                            value: user.consumed
+                        }
+                    )
+                }
+                config.data = data;
+                this.setState({config: config});
+            });
+            return;
+        }
+    }
+
+    render() {
+        console.log(this.type_now);
+        if(this.type_now!=this.props.type){
+            this.getData();
+            this.type_now = this.props.type;
+
+        }
+        if(!this.state.config){
+            return null;
+        }
+        return <Pie {...this.state.config} />;
     }
 }

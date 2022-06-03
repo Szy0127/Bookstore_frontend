@@ -56,7 +56,6 @@ let userConsumed = [
     ['kkkkk', 100]
 ]
 
-export const getUserConsumed = () => userConsumed;
 
 let admin = ['admin', '123456'];
 export const login = (data) => {
@@ -258,4 +257,12 @@ export const buyBooks = (books)=>{
         }
         }
     );
+}
+
+export  const getBookSaled = (callback)=>{
+    postRequest_v2(base_url+'getBookSaled',{},callback);
+}
+
+export  const getUserConsumed = (callback)=>{
+    postRequest_v2(base_url+'getUserConsumed',{},callback);
 }
