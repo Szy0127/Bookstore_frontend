@@ -1,25 +1,9 @@
 import React from 'react';
 import {Link} from 'react-router-dom'
 import {Card, List} from "antd";
-const {Meta} = Card;
+import {BookCard} from "./BookCard";
 
-const BookCard = (props)=>{
-    return (
-        <Link to={{
-        pathname: '/bookDetails',
-        search: '?id=' + props.book['bookID']}}
-          //target="_blank"
-    >
-        <Card
-            hoverable
-            style={{width: 181}}
-            cover={<img alt="image" src={props.book['image']} className={"bookImg"}/>}
-        >
-            <Meta title={props.book['name']} description={'¥' + props.book['price']}/>
-        </Card>
-    </Link>
-    )
-}
+
 export class BookList extends React.Component {
 
     constructor(props) {
