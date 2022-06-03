@@ -12,6 +12,7 @@ export class UserManagement extends React.Component {
 
     componentDidMount() {
         getUsers((data)=>{
+            // console.log(data);
                 this.setState({users:data});
             }
         );
@@ -43,12 +44,13 @@ export class UserManagement extends React.Component {
         for(let user of this.state.users){
             dataSource.push(
                 {
+                    user:user,
                     userID:user.userID,
                     name:user.username,
-                    status:user.ban
                 }
             )
         }
+        console.log(dataSource);
 
         const columns = [
             {
@@ -58,17 +60,19 @@ export class UserManagement extends React.Component {
             },
             {
                 title: '状态',
-                dataIndex: 'status',
+                dataIndex: 'user',
                 key: 'status',
-                render:(status)=>(
-                    status?<span style={{color:"red"}}>禁用</span>:<span>正常</span>
+                render:(user)=>(
+                    user.admin?"管理员":user.ban?<span style={{color:"red"}}>禁用</span>:<span>正常</span>
                 )
             },
             {
                 title:'操作',
-                render:(user)=>(
+                dataIndex:'user',
+                render: (user) => (
+                    user.admin? <div/>:
                     <Button onClick={this.handleStatus.bind(this,user)}>
-                        {user['status']?"解除":"禁用"}
+                        {user.ban?"解除":"禁用"}
                     </Button>
                 )
             }
