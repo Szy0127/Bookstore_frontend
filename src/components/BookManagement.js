@@ -117,13 +117,14 @@ class BookTable extends React.Component {
         for (let book of this.props.books) {
             dataSource.push(
                 {
-                    key: book.bookID,//方便定位
+                    bookID: book.bookID,//方便定位
+                    isbn:book.isbn,
                     name: book.name,
                     type: book.type,
                     author: book.author,
                     price: book.price,
                     description: book.description,
-                    storage: book.inventory,
+                    inventory: book.inventory,
                     image: book.image,//展示text
                 }
             )
@@ -140,16 +141,16 @@ class BookTable extends React.Component {
                     render: (text, record, index) =>
                         // this.state.editRow == index && i != 0 && !this.props.closeInput? <Input defaultValue={text} onChange={this.onChange.bind(this, index, parseInt(i))}/> : text
                         this.state.editRow == index && i!=0 ?
-                            <Input defaultValue={text} onChange={this.onChange.bind(this, record['key'], parseInt(i))} onBlur={console.log(123)}/> :
+                            <Input defaultValue={text} onChange={this.onChange.bind(this, record['key'], parseInt(i))} /> :
                                 text
                 }
             )
         }
         columns[0]['width'] = 70;
-        columns[0]['sorter'] = (a, b) => a.key - b.key;
-        columns[4]['sorter'] = (a, b) => a.price - b.price;
-        columns[5]['ellipsis'] = true;
-        columns[6]['sorter'] = (a, b) => a.storage - b.storage;
+        columns[0]['sorter'] = (a, b) => a.bookID - b.bookID;
+        columns[5]['sorter'] = (a, b) => a.price - b.price;
+        columns[6]['ellipsis'] = true;
+        columns[7]['sorter'] = (a, b) => a.inventory - b.inventory;
         columns.push(
             {
                 title: '操作',
@@ -189,8 +190,9 @@ export class BookManagement extends React.Component {
         super(props);
 
         // const books = getBooks();
-        this.headerTitles = ['序号', '书名', '分类', '作者', '价格', '描述', '库存量', '封面'];
-        this.headerKeys = ['key', 'name', 'type', 'author', 'price', 'description', 'storage', 'image'];
+        this.translate = {'bookID':'序号','name':'书名','type':'分类','author':'作者','price':'价格','description':'描述','image':'图片','inventory':'库存'};
+        this.headerTitles =[]// ['序号', '书名', '分类', '作者', '价格', '描述', '库存量', '封面'];
+        this.headerKeys = []//['key', 'name', 'type', 'author', 'price', 'description', 'storage', 'image'];
         this.editRow = -1;
         this.state = {savedBooks: null, books: null ,searchName: "",closeInput:false};
         this.handleSearch = this.handleSearch.bind(this);
@@ -202,7 +204,17 @@ export class BookManagement extends React.Component {
 
     componentDidMount(){
         getBooks((data) => {
-            console.log(data);
+            let book  = data[0];
+            console.log(book);
+            for(let key in book){
+                // console.log(key);
+                if(this.translate[key]){
+                    this.headerTitles.push(this.translate[key]);
+                }else{
+                    this.headerTitles.push(key);
+                }
+                this.headerKeys.push(key);
+            }
             this.setState({savedBooks: data,books:data.slice()});
         })
     }
