@@ -221,14 +221,23 @@ export const removeCart = (bookID)=>{
     })
 }
 
-export const getOrder = (callback) => {
+export const getOrdersByUserID = (callback) => {
     let user = JSON.parse(localStorage.getItem("user"));
     if(!user){
         Redirect();
         return;
     }
-    postRequest_v2(base_url + "getOrder", {'userID': user.userID},callback);
+    postRequest_v2(base_url + "getOrdersByUserID", {'userID': user.userID},callback);
 
+}
+
+export const getOrders = (callback) => {
+    let user = JSON.parse(localStorage.getItem("user"));
+    if(!user){
+        Redirect();
+        return;
+    }
+    postRequest_v2(base_url + "getOrders", {},callback);
 }
 
 export const buyBooks = (books)=>{

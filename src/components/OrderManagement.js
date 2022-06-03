@@ -1,18 +1,29 @@
 import {Layout, Table} from "antd";
-import {getBook, getOrder} from "../service/BookService";
+import {getBook} from "../service/BookService";
+import {getOrders} from "../service/UserService";
 import React from "react";
 
 export class OrderManagement extends React.Component {
 
     constructor(props) {
         super(props);
-        this.orders = getOrder(0);
+        this.state = {orders: null};
+    }
+    componentDidMount() {
+        getOrders(
+            (orders)=>{
+                this.setState({orders: orders})
+            }
+        );
     }
 
 
     render() {
+        if(!this.state.orders){
+            return null;
+        }
         const dataSource = [];
-        for (let order of this.orders) {
+        for (let order of this.state.orders) {
             let book = getBook(order[0]);
             // console.log(order[1], book[5]);
             dataSource.push(

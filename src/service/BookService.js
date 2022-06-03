@@ -23,17 +23,17 @@ let order_each_type = [
     [13,2,21,17],
     [5,6,19],
     [23]
-]
-export const getOrder = (type) => {
-    if(type==0) {
-        return orders;
-    }
-    return orders.filter(
-        (order) => {
-            return order_each_type[parseInt(type)-1].indexOf(parseInt(order[0])) > -1;
-        }
-    )
-}
+];
+// export const getOrder = (type) => {
+//     if(type==0) {
+//         return orders;
+//     }
+//     return orders.filter(
+//         (order) => {
+//             return order_each_type[parseInt(type)-1].indexOf(parseInt(order[0])) > -1;
+//         }
+//     )
+// }
 
 let bookSaled = [
     [5,30],

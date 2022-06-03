@@ -3,7 +3,7 @@ import {Layout} from 'antd'
 import {HeaderInfo} from "../components/HeaderInfo";
 import {OrderList} from "../components/OrderList";
 import '../css/order.css'
-import {getOrder} from "../service/UserService";
+import {getOrdersByUserID} from "../service/UserService";
 import {MyMenu} from "../components/Menu";
 
 class OrderView extends React.Component {
@@ -16,7 +16,7 @@ class OrderView extends React.Component {
     }
 
     componentDidMount() {
-        getOrder(
+        getOrdersByUserID(
             (data) => {
                 data.reverse();
                 this.setState({orders: data})
