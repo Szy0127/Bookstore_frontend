@@ -1,6 +1,14 @@
 import { Pie } from '@ant-design/plots';
 import React from "react";
-import {getUserConsumed,getBookSaled} from "../service/UserService";
+import {
+    getUserConsumed,
+    getBookSaled,
+    getBookSaledByTimeBetween,
+    getUserConsumedByTimeBetween
+} from "../service/UserService";
+import {DatePicker} from "antd";
+
+const { RangePicker } = DatePicker;
 
 let config = {
     appendPadding: 10,
@@ -27,12 +35,19 @@ export  class AdminStatistic extends React.Component {
         super(props);
         this.state = {config:null}
         this.type_now = null;
+        this.rangeChange = this.rangeChange.bind(this);
     }
 
-    getData() {
-        console.log(1);
+    rangeChange(dates, dateStrings){
+        console.log(dateStrings);
+        this.getData(dateStrings[0],dateStrings[1]);
+
+    }
+
+    getData(start,end) {
+        console.log(start, end);
         if(this.props.type=="book"){
-            getBookSaled((books)=> {
+            let callback = (books)=> {
                 let data = [];
                 for (let book of books) {
                     data.push(
@@ -44,11 +59,16 @@ export  class AdminStatistic extends React.Component {
                 }
                 config.data = data;
                 this.setState({config: config});
-            });
+            };
+            if(start == '' && end == ''){
+                getBookSaled(callback);
+            }else{
+                getBookSaledByTimeBetween(start, end, callback);
+            }
             return;
         }
         if(this.props.type=="user"){
-            getUserConsumed((users)=> {
+            let callback = (users)=> {
                 let data = [];
                 for (let user of users) {
                     data.push(
@@ -60,21 +80,30 @@ export  class AdminStatistic extends React.Component {
                 }
                 config.data = data;
                 this.setState({config: config});
-            });
+            }
+            if(start == '' && end == ''){
+                getUserConsumed(callback);
+            }else{
+                getUserConsumedByTimeBetween(start, end, callback);
+            }
             return;
         }
     }
 
     render() {
-        console.log(this.type_now);
+        // console.log(this.type_now);
         if(this.type_now!=this.props.type){
-            this.getData();
+            this.getData('','');
             this.type_now = this.props.type;
 
         }
-        if(!this.state.config){
-            return null;
+        let fig = null;
+        if(this.state.config){
+            fig =  <Pie {...this.state.config} />;
         }
-        return <Pie {...this.state.config} />;
+        return <React.Fragment>
+            <RangePicker onChange={this.rangeChange}/>
+            {fig}
+        </React.Fragment>
     }
 }

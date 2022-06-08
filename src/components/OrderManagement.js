@@ -19,7 +19,7 @@ export class OrderManagement extends React.Component {
         );
     }
     formatDate(date){
-        return date.getFullYear()+"-"+date.getMonth()+"-"+date.getDay();
+        return date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
     }
 
     expandRow(record, index, indent, expanded){

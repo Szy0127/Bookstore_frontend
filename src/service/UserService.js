@@ -266,3 +266,11 @@ export  const getBookSaled = (callback)=>{
 export  const getUserConsumed = (callback)=>{
     postRequest_v2(base_url+'getUserConsumed',{},callback);
 }
+
+export  const getBookSaledByTimeBetween = (start,end,callback)=>{
+    postRequest_v2(base_url+'getBookSaledByTimeBetween',{'start':start,'end':end},callback);
+}
+
+export  const getUserConsumedByTimeBetween = (start,end,callback)=>{
+    postRequest_v2(base_url+'getUserConsumedByTimeBetween',{'start':start,'end':end},callback);
+}

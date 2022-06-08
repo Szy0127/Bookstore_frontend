@@ -66,7 +66,7 @@ export class OrderList extends React.Component {
     }
 
     formatDate(date){
-        return date.getFullYear()+"-"+date.getMonth()+"-"+date.getDay();
+        return date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
     }
 
 
@@ -74,6 +74,7 @@ export class OrderList extends React.Component {
         console.log(this.props.orders);
         let orders = [];
         for (let order of this.props.orders) {
+            console.log(order.time);
             orders.push(
                 <React.Fragment>
                         <div className="order_info">
