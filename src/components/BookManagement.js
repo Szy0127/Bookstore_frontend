@@ -65,6 +65,7 @@ const BookForm = (props) => {
 class BookTable extends React.Component {
     constructor(props) {
         super(props);
+        this.changeBookID = -1;
         this.state = {editRow: -1};
     }
 
@@ -81,12 +82,18 @@ class BookTable extends React.Component {
         if(!del){
             this.props.updateBook(null);
         }else{
-            this.props.updateBook(this.is_editing_books[this.state.editRow]);
+            for(let book of this.is_editing_books){
+                if(book.bookID == this.changeBookID){
+                    this.props.updateBook(book);
+                }
+            }
         }
         this.setState({editRow: -1});
+        this.changeBookID = -1;
     }
 
     onChange(book, col, e) {//如果每输入一次就更新state 会导致排序+输入的情况下 输入未完成表格就变了
+        this.changeBookID = book.bookID;
         for(let index in this.is_editing_books){
             if(this.is_editing_books[index].bookID===book.bookID){
                 this.is_editing_books[index][this.props.headerKeys[col]] = e.target.value;
