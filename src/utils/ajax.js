@@ -31,6 +31,30 @@ let postRequest_v2 = (url, data, callback) => {
         });
 };
 
+
+let postRequest_v2_async = async (url, data) => {
+    console.log(url, data);
+    let formData = new FormData();
+
+    for (let p in data) {
+        if (data.hasOwnProperty(p))
+            formData.append(p, data[p]);
+    }
+
+    let opts = {
+        method: "POST",
+        dateType: 'json',
+        header: {'content-type': 'application/json'},
+        body: formData,
+        credentials: "include"
+    };
+
+    const response = await fetch(url, opts);
+    const res = await response.json();
+    console.log(res);
+    return res;
+};
+
 let postRequest = (url, json, callback) => {
 
     let opts = {
@@ -54,4 +78,21 @@ let postRequest = (url, json, callback) => {
             console.log(error);
         });
 };
-export {postRequest,postRequest_v2,base_url};
+
+let postRequest_async = async (url, json) => {
+
+    let opts = {
+        method: "POST",
+        body: JSON.stringify(json),//.replace("\\",""),
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        credentials: "include"
+    };
+
+    const response = await fetch(url, opts);
+    const res = await response.json();
+    console.log(res);
+    return res;
+};
+export {postRequest,postRequest_v2,postRequest_async,postRequest_v2_async,base_url};

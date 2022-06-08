@@ -1,5 +1,5 @@
 import {Button, Form, Image, Input, InputNumber, Layout, Select, Table} from "antd";
-import {getBooks,addBook,removeBook,updateBook} from "../service/BookService";
+import {getBooks, addBook, removeBook, updateBook, getBooks_now} from "../service/BookService";
 import React from "react";
 import {SearchBook} from "./SearchBook";
 
@@ -226,6 +226,12 @@ export class BookManagement extends React.Component {
         })
     }
 
+    updateBooks(){
+        getBooks((data) => {
+            this.setState({savedBooks: data,books:this.copyData(data)});
+        });
+    }
+
     handleSearch(books) {
         // console.log(books.length);
         this.setState({books: books,closeInput:true});
@@ -236,7 +242,7 @@ export class BookManagement extends React.Component {
         this.setState({books: this.state.savedBooks,closeInput:true});
     }
 
-    handleAdd(book){
+    async handleAdd(book) {
         // book.unshift(this.state.savedBooks.length+1);
         // book.unshift(this.state.savedBooks.length+1);
         // // console.log(book);
@@ -245,18 +251,14 @@ export class BookManagement extends React.Component {
         // books.unshift(book);
         // saved.unshift(book);//默认插在第一行 可以按序号排序  后续可以通过后端再排序
         // this.setState({books:books,savedBooks:saved});
-        addBook(book);
-        getBooks((data) => {
-            this.setState({savedBooks: data,books:this.copyData(data)});
-        });
+        await addBook(book);
+        this.updateBooks();
 
     }
 
-    handleRemove(book){
-        removeBook(book.bookID);
-        getBooks((data) => {
-            this.setState({savedBooks: data,books:this.copyData(data)});
-        });
+    async handleRemove(book) {
+        await removeBook(book.bookID);
+        this.updateBooks();
         // let saved = this.state.savedBooks;
         // for(let index in saved){
         //     if(saved[index][0]==key){
@@ -266,21 +268,23 @@ export class BookManagement extends React.Component {
         // }
         // this.setState({books:books,savedBooks:saved});
     }
-    updateBook(book) {
+    /*
+    需要保证更新后可以立马看到数据
+    如果update操作是异步的  那不管之后的getBooks是同步的还是异步的  得到的可能都是修改之前的数据
+    所以必须保证update操作是同步的（阻塞）
+
+    另外两种解决方法：
+    1、前端直接修改数据 但是这可能和后端的不匹配
+    2、后端update返回Books 异步setState 但这样传递的大量数据都是浪费的
+
+    必须保证所有的函数调用都有async await
+
+     */
+    async updateBook(book) {
         console.log(book);
-        updateBook(book);
-        // let saved = this.state.savedBooks;
-        // for(let index in saved){
-        //     for(let book of books){
-        //         if(book[0] === saved[index][0]){
-        //             saved[index] = book.slice();
-        //             break;
-        //         }
-        //     }
-        // }
-        getBooks((data) => {
-            this.setState({savedBooks: data,books:this.copyData(data)});
-        });
+        await updateBook(book);
+
+        this.updateBooks();
     }
 
     render() {

@@ -1,11 +1,18 @@
-import {base_url, postRequest_v2,postRequest} from "../utils/ajax";
+import {base_url, postRequest_v2, postRequest,postRequest_v2_async, postRequest_async} from "../utils/ajax";
 import {message} from "antd";
 export const getBooks = (callback) =>{
     postRequest_v2(base_url+"getBooks","",callback);
 }
+
+export const getBooks_now = () =>{
+    postRequest_v2_async(base_url+"getBooks","");
+}
+
 export const getBook = (i,callback) => {
     postRequest_v2(base_url+"getBook",{'ID':parseInt(i)},callback);
 }
+
+
 let orders = [
     [6,1, '2022-1-21', '87725228'],
     [5,2, '2021-12-30', '86985965'],
@@ -57,32 +64,50 @@ export const getBookSaled  = ()=> bookSaled;
 //     cart.splice(cart.indexOf(i),1);
 // }
 
-export const addBook = (book)=>{
-    postRequest_v2(base_url+"addBook",book,(data)=>{
-        if(data.success){
-            message.success(data.msg);
-        }else{
-            message.error(data.msg);
-        }
-    });
+export const addBook = async (book) => {
+    // postRequest_v2(base_url + "addBook", book, (data) => {
+    //     if (data.success) {
+    //         message.success(data.msg);
+    //     } else {
+    //         message.error(data.msg);
+    //     }
+    // });
+    const data = await postRequest_v2_async(base_url + "addBook", book);
+    if (data.success) {
+        message.success(data.msg);
+    } else {
+        message.error(data.msg);
+    }
 }
 
-export const removeBook = (bookID)=>{
-    postRequest_v2(base_url+"removeBook",{'bookID':bookID},(data)=>{
-        if(data.success){
-            message.success(data.msg);
-        }else{
-            message.error(data.msg);
-        }
-    });
+export const removeBook = async (bookID) => {
+    // postRequest_v2(base_url+"removeBook",{'bookID':bookID},(data)=>{
+    //     if(data.success){
+    //         message.success(data.msg);
+    //     }else{
+    //         message.error(data.msg);
+    //     }
+    // });
+    const data = await postRequest_v2_async(base_url+"removeBook",{'bookID':bookID});
+    if (data.success) {
+        message.success(data.msg);
+    } else {
+        message.error(data.msg);
+    }
 }
 
-export const updateBook = (book)=>{
-    postRequest(base_url+"updateBook",book,(data)=>{
-        if(data.success){
-            message.success(data.msg);
-        }else{
-            message.error(data.msg);
-        }
-    });
+export const updateBook = async (book)=>{
+    // postRequest(base_url+"updateBook",book,(data)=>{
+    //     if(data.success){
+    //         message.success(data.msg);
+    //     }else{
+    //         message.error(data.msg);
+    //     }
+    // });
+    const data = await postRequest_async(base_url + "updateBook", book);
+    if(data.success){
+        message.success(data.msg);
+    }else{
+        message.error(data.msg);
+    }
 }
