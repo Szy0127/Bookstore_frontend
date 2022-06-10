@@ -7,6 +7,7 @@ import {
     getUserConsumedByTimeBetween
 } from "../service/UserService";
 import {DatePicker} from "antd";
+import {DateRange} from "./DateRange";
 
 const { RangePicker } = DatePicker;
 
@@ -35,17 +36,25 @@ export  class AdminStatistic extends React.Component {
         super(props);
         this.state = {config:null}
         this.type_now = null;
-        this.rangeChange = this.rangeChange.bind(this);
+        this.start = "";
+        this.end = "";
+        this.handleChangeStart = this.handleChangeStart.bind(this);
+        this.handleChangeEnd = this.handleChangeEnd.bind(this);
     }
 
-    rangeChange(dates, dateStrings){
-        console.log(dateStrings);
-        this.getData(dateStrings[0],dateStrings[1]);
-
+    handleChangeStart(dateString){
+        this.start = dateString;
+        this.getData();
+    }
+    handleChangeEnd(dateString){
+        this.end = dateString;
+        this.getData();
     }
 
-    getData(start,end) {
-        console.log(start, end);
+    getData() {
+        let start = this.start;
+        let end = this.end;
+
         if(this.props.type=="book"){
             let callback = (books)=> {
                 let data = [];
@@ -102,7 +111,8 @@ export  class AdminStatistic extends React.Component {
             fig =  <Pie {...this.state.config} />;
         }
         return <React.Fragment>
-            <RangePicker onChange={this.rangeChange}/>
+            <DateRange handleChangeStart={this.handleChangeStart} handleChangeEnd={this.handleChangeEnd}/>
+            {/*<RangePicker onChange={this.rangeChange}/>*/}
             {fig}
         </React.Fragment>
     }
