@@ -1,6 +1,6 @@
-import {Layout, Table} from "antd";
+import {Input, Layout, Table} from "antd";
 import {getBook} from "../service/BookService";
-import {getOrders} from "../service/UserService";
+import {getOrdersByTimeAndBook} from "../service/UserService";
 import React from "react";
 import {BookCard} from "./BookCard";
 import {DateRange} from "./DateRange";
@@ -11,9 +11,36 @@ export class OrderManagement extends React.Component {
         super(props);
         this.state = {orders: null};
         this.expandRow = this.expandRow.bind(this);
+        this.start = "";
+        this.end = "";
+        this.search = "";
+        this.getData = this.getData.bind(this);
+        this.handleChangeStart = this.handleChangeStart.bind(this);
+        this.handleChangeEnd = this.handleChangeEnd.bind(this);
+        this.handleChangeBookName= this.handleChangeBookName.bind(this);
     }
     componentDidMount() {
-        getOrders(
+        this.getData();
+    }
+
+    handleChangeBookName(e){
+        this.search = e.target.value.toLowerCase();
+        this.getData();
+    }
+    handleChangeStart(dateString){
+        this.start = dateString;
+        this.getData();
+    }
+    handleChangeEnd(dateString){
+        this.end = dateString;
+        this.getData();
+    }
+
+    getData(){
+        getOrdersByTimeAndBook(
+            this.start,
+            this.end,
+            this.search,
             (orders)=>{
                 this.setState({orders: orders})
             }
@@ -136,7 +163,8 @@ export class OrderManagement extends React.Component {
 
         return (
             <Layout>
-                <DateRange/>
+                <DateRange handleChangeStart={this.handleChangeStart} handleChangeEnd={this.handleChangeEnd}/>
+                <Input placeholder={"书名"} onChange={this.handleChangeBookName}/>
                 <Table dataSource={dataSource} columns={columns} expandedRowRender={this.expandRow}/>
             </Layout>
         )
