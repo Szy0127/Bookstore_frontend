@@ -69,11 +69,8 @@ export  class AdminStatistic extends React.Component {
                 config.data = data;
                 this.setState({config: config});
             };
-            if(start == '' && end == ''){
-                getBookSaled(callback);
-            }else{
-                getBookSaledByTimeBetween(start, end, callback);
-            }
+            getBookSaledByTimeBetween(start, end, callback);
+
             return;
         }
         if(this.props.type=="user"){
@@ -90,11 +87,8 @@ export  class AdminStatistic extends React.Component {
                 config.data = data;
                 this.setState({config: config});
             }
-            if(start == '' && end == ''){
-                getUserConsumed(callback);
-            }else{
-                getUserConsumedByTimeBetween(start, end, callback);
-            }
+            getUserConsumedByTimeBetween(start, end, callback);
+
             return;
         }
     }

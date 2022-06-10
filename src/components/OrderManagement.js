@@ -3,6 +3,7 @@ import {getBook} from "../service/BookService";
 import {getOrders} from "../service/UserService";
 import React from "react";
 import {BookCard} from "./BookCard";
+import {DateRange} from "./DateRange";
 
 export class OrderManagement extends React.Component {
 
@@ -135,6 +136,7 @@ export class OrderManagement extends React.Component {
 
         return (
             <Layout>
+                <DateRange/>
                 <Table dataSource={dataSource} columns={columns} expandedRowRender={this.expandRow}/>
             </Layout>
         )
