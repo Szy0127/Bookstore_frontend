@@ -262,17 +262,11 @@ export const buyBooks = (books) => {
 
 
 export const getBookSaledByTimeBetween = (start, end, callback) => {
-    if (start == "" && end == "") {
-        postRequest_v2(base_url + 'getBookSaled', {}, callback);
-    } else {
-        postRequest_v2(base_url + 'getBookSaledByTimeBetween', {'start': start, 'end': end}, callback);
-    }
+    postRequest_v2(base_url + 'getBookSaledByTimeBetween', {'start': start, 'end': end}, callback);
+
 }
 
 export const getUserConsumedByTimeBetween = (start, end, callback) => {
-    if (start == "" && end == "") {
-        postRequest_v2(base_url + 'getUserConsumed', {}, callback);
-    } else {
-        postRequest_v2(base_url + 'getUserConsumedByTimeBetween', {'start': start, 'end': end}, callback);
-    }
+    postRequest_v2(base_url + 'getUserConsumedByTimeBetween', {'start': start, 'end': end}, callback);
+
 }
