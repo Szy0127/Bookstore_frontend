@@ -9,6 +9,7 @@ import LoginView from "./view/LoginView";
 import RegisterView from "./view/RegisterView";
 import AdminView from "./view/AdminView";
 import PrivateRoute from "./PrivateRoute";
+import StatisticView from "./view/StatisticView";
 const GetRoutes = ()=>{
 
     return useRoutes([
@@ -47,6 +48,10 @@ const GetRoutes = ()=>{
         {
             path:'/register',
             element:<RegisterView/>
+        },
+        {
+            path:'/statistic',
+            element:<StatisticView/>
         },
     ]);
 }

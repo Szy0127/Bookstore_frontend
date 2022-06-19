@@ -1,8 +1,6 @@
 import { Pie } from '@ant-design/plots';
 import React from "react";
 import {
-    getUserConsumed,
-    getBookSaled,
     getBookSaledByTimeBetween,
     getUserConsumedByTimeBetween
 } from "../service/UserService";

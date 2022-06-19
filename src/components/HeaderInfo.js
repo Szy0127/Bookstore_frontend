@@ -23,8 +23,8 @@ export class HeaderInfo extends React.Component {
     }
 
     render() {
-        const navHref = ['/home', '/cart', '/order', '/profile'];
-        const navTitle = ['Books', 'My Cart', 'My Orders', 'My Profile'];
+        const navHref = ['/home', '/cart', '/order', '/profile','/statistic'];
+        const navTitle = ['Books', 'My Cart', 'My Orders', 'My Profile','My statistic'];
         let navItem = [];
         for (let i = 0; i < navHref.length; i++) {
             if (i === this.props.navID) {
