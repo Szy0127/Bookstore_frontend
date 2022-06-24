@@ -1,19 +1,11 @@
 import React from "react";
-import {BookManagement} from "../components/BookManagement";
-import {UserManagement} from "../components/UserManagement";
-import {OrderManagement} from "../components/OrderManagement";
-import {AdminStatistic} from "../components/AdminStatistic";
-import {Layout} from "antd";
-import {HeaderInfo} from "../components/HeaderInfo";
-import {MyMenu} from "../components/Menu";
-import {
-    getBookSaledByTimeBetween,
-    getBookSaledByUserAndTime,
-    getUserConsumedByTimeBetween
-} from "../service/UserService";
+
+import {getUserStatistic} from "../service/UserService";
 import {Pie} from "@ant-design/plots";
 import {DateRange} from "../components/DateRange";
-
+import Text from "antd/es/typography/Text";
+import {Layout} from "antd";
+import {HeaderInfo} from "../components/HeaderInfo";
 let config = {
     appendPadding: 10,
     angleField: 'value',
@@ -37,7 +29,7 @@ class StatisticView extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {config: null}
+        this.state = {config: null,amount:0,consumed:0};
         this.type_now = null;
         this.start = "";
         this.end = "";
@@ -64,9 +56,10 @@ class StatisticView extends React.Component {
         let start = this.start;
         let end = this.end;
 
-        let callback = (books) => {
+        let callback = (data_ret) => {
+            console.log(data_ret);
             let data = [];
-            for (let book of books) {
+            for (let book of data_ret.books) {
                 data.push(
                     {
                         type: book.book.name,
@@ -75,9 +68,9 @@ class StatisticView extends React.Component {
                 )
             }
             config.data = data;
-            this.setState({config: config});
+            this.setState({config: config,amount:data_ret.bookAmount,consumed:data_ret.consumed});
         };
-        getBookSaledByUserAndTime(start, end, callback);
+        getUserStatistic(start, end, callback);
 
     }
 
@@ -85,15 +78,21 @@ class StatisticView extends React.Component {
         // console.log(this.type_now);
         let fig = null;
         if (this.state.config) {
-            fig = <Pie {...this.state.config} />;
+            fig = <Pie {...this.state.config} style={{width:'600px'}}/>;
         }
-        return <React.Fragment>
-            <DateRange handleChangeStart={this.handleChangeStart} handleChangeEnd={this.handleChangeEnd}/>
-            {/*<RangePicker onChange={this.rangeChange}/>*/}
-            {fig}
-        </React.Fragment>
+        return <Layout>
+            <HeaderInfo navID={4}/>
+            <div style={{margin:'100px auto'}}>
+                <DateRange handleChangeStart={this.handleChangeStart} handleChangeEnd={this.handleChangeEnd}/>
+                <div style={{'text-align':'center',margin:'20px'}}><Text style={{fontSize:20}}>{this.state.amount}本</Text></div>
+                <div style={{'text-align':'center',margin:'20px'}}><Text style={{fontSize:20}}>{this.state.consumed}元</Text></div>
+                {fig}
+            </div>
+        </Layout>
+
     }
 }
+
 
 
 export default StatisticView;

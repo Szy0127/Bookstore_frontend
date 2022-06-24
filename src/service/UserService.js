@@ -266,13 +266,13 @@ export const getBookSaledByTimeBetween = (start, end, callback) => {
 
 }
 
-export const getBookSaledByUserAndTime = (start, end, callback) => {
+export const getUserStatistic = (start, end, callback) => {
     let user = JSON.parse(localStorage.getItem("user"));
     if (!user) {
         Redirect();
         return;
     }
-    postRequest_v2(base_url + 'getBookSaledByUser', {'userID':user.userID,'start': start, 'end': end}, callback);
+    postRequest_v2(base_url + 'getUserStatistic', {'userID':user.userID,'start': start, 'end': end}, callback);
 
 }
 
