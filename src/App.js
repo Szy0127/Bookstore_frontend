@@ -10,6 +10,7 @@ import RegisterView from "./view/RegisterView";
 import AdminView from "./view/AdminView";
 import PrivateRoute from "./PrivateRoute";
 import StatisticView from "./view/StatisticView";
+import {OrderManagement} from "./components/OrderManagement";
 const GetRoutes = ()=>{
 
     return useRoutes([

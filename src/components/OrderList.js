@@ -3,7 +3,12 @@ import "../css/cart.css"
 import {Button,InputNumber} from "antd";
 import {Book} from "./Book";
 import {getBook} from "../service/BookService";
+/*
 
+不适合检索 废弃了
+
+
+ */
 export class OrderList extends React.Component {
 
     constructor(props) {

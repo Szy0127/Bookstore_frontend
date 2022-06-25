@@ -240,6 +240,14 @@ export const getOrdersByTimeAndBook = (start,end,bookName,callback) => {
     }
     postRequest_v2(base_url + "getOrdersByTimeAndBook", {'start': start, 'end': end,'bookName':bookName}, callback);
 }
+export const getOrdersByUserAndTimeAndBook = (start,end,bookName,callback) => {
+    let user = JSON.parse(localStorage.getItem("user"));
+    if (!user) {
+        Redirect();
+        return;
+    }
+    postRequest_v2(base_url + "getOrdersByUserAndTimeAndBook", {'start': start, 'end': end,'bookName':bookName}, callback);
+}
 export const buyBooks = (books) => {
     let user = JSON.parse(localStorage.getItem("user"));
     if (!user) {

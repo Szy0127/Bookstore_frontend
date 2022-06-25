@@ -21,7 +21,7 @@ class AdminView extends React.Component {
 
     render() {
         const types = ['书籍管理', '用户管理','订单管理','统计'];
-        const contents = [<BookManagement/>,<UserManagement/>,<OrderManagement/>,<AdminStatistic type="book"/>,<AdminStatistic type="user"/>];
+        const contents = [<BookManagement/>,<UserManagement/>,<OrderManagement type={"admin"}/>,<AdminStatistic type="book"/>,<AdminStatistic type="user"/>];
         return (
             <Layout>
                 <HeaderInfo/>

@@ -1,6 +1,6 @@
 import {Input, Layout, Table} from "antd";
 import {getBook} from "../service/BookService";
-import {getOrdersByTimeAndBook} from "../service/UserService";
+import {getOrdersByTimeAndBook, getOrdersByUserAndTimeAndBook} from "../service/UserService";
 import React from "react";
 import {BookCard} from "./BookCard";
 import {DateRange} from "./DateRange";
@@ -37,7 +37,8 @@ export class OrderManagement extends React.Component {
     }
 
     getData(){
-        getOrdersByTimeAndBook(
+        const f = this.props.type == "user" ? getOrdersByUserAndTimeAndBook : getOrdersByTimeAndBook;
+        f(
             this.start,
             this.end,
             this.search,
@@ -160,6 +161,10 @@ export class OrderManagement extends React.Component {
             }
 
         ];
+        if(this.props.type=="user"){
+            //去掉用户ID
+            columns.splice(2,1);
+        }
 
         return (
             <Layout>
