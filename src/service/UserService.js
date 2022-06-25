@@ -182,7 +182,7 @@ export const getCart = (callback) => {
         Redirect();
         return;
     }
-    postRequest_v2(base_url + "getCart", {'userID': user.userID}, callback);
+    postRequest_v2(base_url + "getCart", {}, callback);
 
 }
 
@@ -216,7 +216,7 @@ export const removeCart = (bookID) => {
         Redirect();
         return;
     }
-    const data = {'userID': user.userID, 'bookID': bookID};
+    const data = {'bookID': bookID};
     postRequest_v2(base_url + "/removeCart", data, (d) => {
     })
 }
@@ -227,7 +227,7 @@ export const getOrdersByUserID = (callback) => {
         Redirect();
         return;
     }
-    postRequest_v2(base_url + "getOrdersByUserID", {'userID': user.userID}, callback);
+    postRequest_v2(base_url + "getOrdersByUserID", {}, callback);
 
 }
 
@@ -247,7 +247,7 @@ export const buyBooks = (books) => {
         return;
     }
 
-    postRequest(base_url + "buyBooks/" + user.userID, books,
+    postRequest(base_url + "buyBooks", books,
         (data) => {
             if (data) {
                 history.push("/order");
@@ -272,7 +272,7 @@ export const getUserStatistic = (start, end, callback) => {
         Redirect();
         return;
     }
-    postRequest_v2(base_url + 'getUserStatistic', {'userID':user.userID,'start': start, 'end': end}, callback);
+    postRequest_v2(base_url + 'getUserStatistic', {'start': start, 'end': end}, callback);
 
 }
 
