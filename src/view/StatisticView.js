@@ -1,11 +1,12 @@
 import React from "react";
 
-import {getUserStatistic} from "../service/UserService";
+import {checkSession, getUserStatistic} from "../service/UserService";
 import {Pie} from "@ant-design/plots";
 import {DateRange} from "../components/DateRange";
 import Text from "antd/es/typography/Text";
 import {Layout} from "antd";
 import {HeaderInfo} from "../components/HeaderInfo";
+import {history} from "../utils/history";
 let config = {
     appendPadding: 10,
     angleField: 'value',
@@ -40,6 +41,12 @@ class StatisticView extends React.Component {
     componentDidMount() {
         console.log(1);
         this.getData('', '');
+        checkSession((succuss)=>{
+            if(!succuss){
+                history.push("/login");
+                history.go();
+            }
+        })
     }
 
     handleChangeStart(dateString) {

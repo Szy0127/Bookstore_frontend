@@ -6,14 +6,19 @@ import '../css/bootstrap.min.css'
 import logo from '../assets/logo.svg';
 import logoFont from '../assets/logo-name.svg';
 import user_image from '../assets/profile.jpg';
-import {logout} from "../service/UserService";
+import {checkSession, logout} from "../service/UserService";
 
 export class HeaderInfo extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {show: false};
-        this.user = JSON.parse(localStorage.getItem('user'));
+        this.state = {show: false,user:null};
+        checkSession((success)=>{
+            if(success){
+                this.setState({user:JSON.parse(localStorage.getItem('user'))});
+            }
+        })
+        // this.user = JSON.parse(localStorage.getItem('user'));
         this.handleClick = this.handleClick.bind(this);
     }
 
@@ -67,7 +72,7 @@ export class HeaderInfo extends React.Component {
                     >
                         <Button>个人设置</Button>
                     </Link>
-                    {this.user && this.user.admin ?
+                    {this.state.user && this.state.user.admin ?
                         <Link
                             to={{
                                 pathname: '/admin/'
@@ -80,7 +85,7 @@ export class HeaderInfo extends React.Component {
                             pathname: '/login/'
                         }}
                     >
-                        <Button onClick={logout}>{this.user?"退出登录":"登录"}</Button>
+                        <Button onClick={logout}>{this.state.user?"退出登录":"登录"}</Button>
                     </Link>
                 </Layout>
                 : null
@@ -91,7 +96,7 @@ export class HeaderInfo extends React.Component {
                 <nav className="navbar navbar-expand-lg navbar-light bg-light">
                     {nav}
                     <div className="user">
-                        <div className="user_hello">{this.user ? "Hi,"+this.user.username : "Login"}</div>
+                        <div className="user_hello">{this.user ? "Hi,"+this.user.username : ""}</div>
                         <a><img className="home_user_image rounded-circle" src={user_image} onClick={this.handleClick}/></a>
                         {select}
                     </div>

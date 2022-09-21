@@ -3,9 +3,10 @@ import {Layout} from 'antd'
 import {HeaderInfo} from "../components/HeaderInfo";
 import {OrderList} from "../components/OrderList";
 import '../css/order.css'
-import {getOrdersByUserID} from "../service/UserService";
+import {checkSession, getOrdersByUserID} from "../service/UserService";
 import {MyMenu} from "../components/Menu";
 import {OrderManagement} from "../components/OrderManagement";
+import {history} from "../utils/history";
 
 /*
 
@@ -21,14 +22,20 @@ class OrderView extends React.Component {
         // this.handleChange = this.handleChange.bind(this);
     }
 
-    // componentDidMount() {
-    //     getOrdersByUserID(
-    //         (data) => {
-    //             data.reverse();
-    //             this.setState({orders: data})
-    //         }
-    //     );
-    // }
+    componentDidMount() {
+        // getOrdersByUserID(
+        //     (data) => {
+        //         data.reverse();
+        //         this.setState({orders: data})
+        //     }
+        // );
+        checkSession((succuss)=>{
+            if(!succuss){
+                history.push("/login");
+                history.go();
+            }
+        })
+    }
     //
     // handleChange(key) {
     //     this.setState({show: key});

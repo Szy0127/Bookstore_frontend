@@ -288,3 +288,7 @@ export const getUserConsumedByTimeBetween = (start, end, callback) => {
     postRequest_v2(base_url + 'getUserConsumedByTimeBetween', {'start': start, 'end': end}, callback);
 
 }
+
+export const checkSession = (callback)=>{
+    postRequest_v2(base_url + 'checkSession', {}, callback);
+}

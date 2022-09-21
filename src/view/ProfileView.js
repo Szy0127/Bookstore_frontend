@@ -8,6 +8,8 @@ import {UserInfo} from "../components/UserInfo";
 import {Security} from "../components/Security";
 import {Address} from "../components/Address";
 import {MyMenu} from "../components/Menu";
+import {checkSession} from "../service/UserService";
+import {history} from "../utils/history";
 
 
 const Alipay = ()=>
@@ -28,6 +30,15 @@ class ProfileView extends React.Component {
 
     handleChange(key) {
         this.setState({show: key});
+    }
+
+    componentDidMount() {
+        checkSession((succuss)=>{
+            if(!succuss){
+                history.push("/login");
+                history.go();
+            }
+        })
     }
 
     render() {

@@ -21,6 +21,7 @@ class HomeView extends React.Component {
     }
 
     componentDidMount(){
+
         getBooks((data) => {
             console.log(data);
             this.setState({books: data});
