@@ -13,11 +13,7 @@ export class HeaderInfo extends React.Component {
     constructor(props) {
         super(props);
         this.state = {show: false,user:null};
-        checkSession((success)=>{
-            if(success){
-                this.setState({user:JSON.parse(localStorage.getItem('user'))});
-            }
-        })
+
         // this.user = JSON.parse(localStorage.getItem('user'));
         this.handleClick = this.handleClick.bind(this);
     }
@@ -25,6 +21,14 @@ export class HeaderInfo extends React.Component {
 
     handleClick(e) {
         this.setState({show: !this.state.show});
+    }
+
+    componentDidMount() {
+        checkSession((success)=>{
+            if(success){
+                this.setState({user:JSON.parse(localStorage.getItem('user'))});
+            }
+        })
     }
 
     render() {
@@ -96,7 +100,7 @@ export class HeaderInfo extends React.Component {
                 <nav className="navbar navbar-expand-lg navbar-light bg-light">
                     {nav}
                     <div className="user">
-                        <div className="user_hello">{this.user ? "Hi,"+this.user.username : ""}</div>
+                        <div className="user_hello">{this.state.user ? "Hi,"+this.state.user.username : ""}</div>
                         <a><img className="home_user_image rounded-circle" src={user_image} onClick={this.handleClick}/></a>
                         {select}
                     </div>
