@@ -118,10 +118,9 @@ export const login = (data) => {
     // }
     // return success;
 };
-export const logout = () => {
+export const logout = (callback) => {
     localStorage.removeItem('user');
-    postRequest_v2(base_url + "logout", {}, () => {
-    });
+    postRequest_v2(base_url + "logout", {}, callback);
 }
 
 export const Redirect = () => {

@@ -7,7 +7,7 @@ import logo from '../assets/logo.svg';
 import logoFont from '../assets/logo-name.svg';
 import user_image from '../assets/profile.jpg';
 import {checkSession, logout} from "../service/UserService";
-
+import {message} from "antd";
 export class HeaderInfo extends React.Component {
 
     constructor(props) {
@@ -21,6 +21,14 @@ export class HeaderInfo extends React.Component {
 
     handleClick(e) {
         this.setState({show: !this.state.show});
+    }
+    componentDidMount() {
+        checkSession((success)=>{
+            if(success){
+                this.setState({user:JSON.parse(localStorage.getItem('user'))});
+            }
+            // console.log(success);
+        })
     }
 
     componentDidMount() {
@@ -89,7 +97,10 @@ export class HeaderInfo extends React.Component {
                             pathname: '/login/'
                         }}
                     >
-                        <Button onClick={logout}>{this.state.user?"退出登录":"登录"}</Button>
+                        <Button onClick={()=>logout(time=>{
+                            console.log(time);
+                            message.success(`本次登录时长${time/1000}s`);
+                        })}>{this.state.user?"退出登录":"登录"}</Button>
                     </Link>
                 </Layout>
                 : null
