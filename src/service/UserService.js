@@ -231,21 +231,25 @@ export const getOrdersByUserID = (callback) => {
 }
 
 
-export const getOrdersByTimeAndBook = (start,end,bookName,callback) => {
+export const getOrdersByTimeAndBook = (start, end, bookName, callback) => {
     let user = JSON.parse(localStorage.getItem("user"));
     if (!user) {
         Redirect();
         return;
     }
-    postRequest_v2(base_url + "getOrdersByTimeAndBook", {'start': start, 'end': end,'bookName':bookName}, callback);
+    postRequest_v2(base_url + "getOrdersByTimeAndBook", {'start': start, 'end': end, 'bookName': bookName}, callback);
 }
-export const getOrdersByUserAndTimeAndBook = (start,end,bookName,callback) => {
+export const getOrdersByUserAndTimeAndBook = (start, end, bookName, callback) => {
     let user = JSON.parse(localStorage.getItem("user"));
     if (!user) {
         Redirect();
         return;
     }
-    postRequest_v2(base_url + "getOrdersByUserAndTimeAndBook", {'start': start, 'end': end,'bookName':bookName}, callback);
+    postRequest_v2(base_url + "getOrdersByUserAndTimeAndBook", {
+        'start': start,
+        'end': end,
+        'bookName': bookName
+    }, callback);
 }
 export const buyBooks = (books) => {
     let user = JSON.parse(localStorage.getItem("user"));
@@ -255,14 +259,19 @@ export const buyBooks = (books) => {
     }
 
     postRequest(base_url + "buyBooks", books,
+        // (data) => {
+        //     if (data) {
+        //         history.push("/order");
+        //         history.go();
+        //         message.success("购买成功");
+        //     } else {
+        //         message.error("购买失败");
+        //     }
+        // }
         (data) => {
-            if (data) {
-                history.push("/order");
-                history.go();
-                message.success("购买成功");
-            } else {
-                message.error("购买失败");
-            }
+            message.success("订单处理成功，请稍后自行查看结果");
+            history.push("/order");
+            history.go();
         }
     );
 }
@@ -288,6 +297,6 @@ export const getUserConsumedByTimeBetween = (start, end, callback) => {
 
 }
 
-export const checkSession = (callback)=>{
+export const checkSession = (callback) => {
     postRequest_v2(base_url + 'checkSession', {}, callback);
 }

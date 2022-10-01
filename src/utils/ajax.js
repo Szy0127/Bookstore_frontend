@@ -68,8 +68,13 @@ let postRequest = (url, json, callback) => {
 
     console.log(opts);
     fetch(url,opts)
-        .then((response) => {
-            return response.json()
+        .then(async (response) => {
+            try {
+                let res = await response.json()
+                return res;
+            } catch (e) {
+                return response;
+            }
         })
         .then((data) => {
             callback(data);
