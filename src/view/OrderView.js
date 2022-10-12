@@ -1,5 +1,5 @@
 import React from 'react';
-import {Layout} from 'antd'
+import {Layout,message} from 'antd'
 import {HeaderInfo} from "../components/HeaderInfo";
 import {OrderList} from "../components/OrderList";
 import '../css/order.css'
@@ -7,6 +7,7 @@ import {checkSession, getOrdersByUserID} from "../service/UserService";
 import {MyMenu} from "../components/Menu";
 import {OrderManagement} from "../components/OrderManagement";
 import {history} from "../utils/history";
+import {ws_url} from "../service/BookService";
 
 /*
 
@@ -20,6 +21,7 @@ class OrderView extends React.Component {
         super(props);
         // this.state = {show: 0,orders:[]};
         // this.handleChange = this.handleChange.bind(this);
+
     }
 
     componentDidMount() {
@@ -35,6 +37,7 @@ class OrderView extends React.Component {
                 history.go();
             }
         })
+
     }
     //
     // handleChange(key) {

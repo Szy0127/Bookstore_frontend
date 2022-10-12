@@ -269,9 +269,11 @@ export const buyBooks = (books) => {
         //     }
         // }
         (data) => {
-            message.success("订单处理成功，请稍后自行查看结果");
-            history.push("/order");
-            history.go();
+            // message.success("订单处理成功，请稍后自行查看结果");
+            // history.push("/order");
+            // history.go();
+            //为了让socket生命周期延长 显示订单处理结束的提示
+            //事实上最好socket在login后连接 使用context管理 但需要改route的用法 并且改所有组件为函数组件
         }
     );
 }
@@ -300,3 +302,4 @@ export const getUserConsumedByTimeBetween = (start, end, callback) => {
 export const checkSession = (callback) => {
     postRequest_v2(base_url + 'checkSession', {}, callback);
 }
+

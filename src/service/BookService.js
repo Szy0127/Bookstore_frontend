@@ -111,3 +111,5 @@ export const updateBook = async (book)=>{
         message.error(data.msg);
     }
 }
+
+export const ws_url = "ws://localhost:8080/websocket/orderFinish/";//+userID

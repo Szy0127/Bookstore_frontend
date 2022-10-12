@@ -99,7 +99,9 @@ export class HeaderInfo extends React.Component {
                     >
                         <Button onClick={()=>logout(time=>{
                             console.log(time);
-                            message.success(`本次登录时长${time/1000}s`);
+                            if(time!=0){
+                                message.success(`本次登录时长${time/1000}s`);
+                            }
                         })}>{this.state.user?"退出登录":"登录"}</Button>
                     </Link>
                 </Layout>
