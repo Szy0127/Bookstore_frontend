@@ -1,5 +1,5 @@
-// const base_url = "http://localhost:8080/";
-const base_url = "https://localhost:8443/";
+const base_url = "http://localhost:8080/";
+// const base_url = "https://localhost:8443/";
 let postRequest_v2 = (url, data, callback) => {
     console.log(url,data);
     let formData = new FormData();
