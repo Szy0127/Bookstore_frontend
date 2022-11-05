@@ -1,5 +1,6 @@
 import React from 'react';
 import {Button} from "antd";
+import {Link} from "react-router-dom";
 export class SearchBook extends React.Component {
 
     constructor(props) {
@@ -36,8 +37,16 @@ export class SearchBook extends React.Component {
         this.initialBooks = this.props.initialBooks? this.props.initialBooks : (this.props.books ? this.props.books.slice():[]);
         return(
             <div className="search">
-                <input id="search_input" type="text" value={this.state.searchName} placeholder="search" onChange={this.handleSearch}/>
-                <Button id="search_button" onClick={this.handleClear}>clear</Button>
+                <input id="search_input" type="text" value={this.state.searchName} placeholder="书名" onChange={this.handleSearch}/>
+                <Button id="search_button" onClick={this.handleClear}>清空</Button>
+                {/*<Button id="description_search" onClick={this.handleClear}>高级检索</Button>*/}
+                <Link
+                    to={{
+                        pathname: '/searchBook/'
+                    }}
+                >
+                    <Button>高级检索</Button>
+                </Link>
             </div>
         );
     }

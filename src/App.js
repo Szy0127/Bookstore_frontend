@@ -11,6 +11,7 @@ import AdminView from "./view/AdminView";
 import PrivateRoute from "./PrivateRoute";
 import StatisticView from "./view/StatisticView";
 import {OrderManagement} from "./components/OrderManagement";
+import SearchBookView from "./view/SearchBookView";
 const GetRoutes = ()=>{
 
     return useRoutes([
@@ -25,6 +26,10 @@ const GetRoutes = ()=>{
         {
             path:'/bookDetails',
             element:<BookView/>
+        },
+        {
+            path:'/searchBook',
+            element:<SearchBookView/>
         },
         {
             path:'/cart',

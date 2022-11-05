@@ -112,5 +112,18 @@ export const updateBook = async (book)=>{
     }
 }
 
+export const updateBookIndex = async (book)=>{
+
+    const data = await postRequest_async(base_url + "updateBookIndex", book);
+    if(data.success){
+        message.success(data.msg);
+    }else{
+        message.error(data.msg);
+    }
+}
+export const searchBooksByDescription = (description,callback) => {
+    postRequest_v2(base_url+"searchBooksByDescription",{description},callback);
+}
+
 // export const ws_url = "wss://localhost:8443/websocket/orderFinish/";//+userID
 export const ws_url = "ws://localhost:8080/websocket/orderFinish/";//+userID

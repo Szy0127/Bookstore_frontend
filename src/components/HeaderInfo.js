@@ -41,7 +41,7 @@ export class HeaderInfo extends React.Component {
 
     render() {
         const navHref = ['/home', '/cart', '/order', '/profile','/statistic'];
-        const navTitle = ['Books', 'My Cart', 'My Orders', 'My Profile','My Statistic'];
+        const navTitle = ['书籍', '购物车', '订单', '个人信息','数据统计'];
         let navItem = [];
         for (let i = 0; i < navHref.length; i++) {
             if (i === this.props.navID) {

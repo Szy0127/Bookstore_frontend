@@ -1,5 +1,5 @@
 import {Button, Form, Image, Input, InputNumber, Layout, Select, Table} from "antd";
-import {getBooks, addBook, removeBook, updateBook, getBooks_now} from "../service/BookService";
+import {getBooks, addBook, removeBook, updateBook, getBooks_now, updateBookIndex} from "../service/BookService";
 import React from "react";
 import {SearchBook} from "./SearchBook";
 
@@ -84,19 +84,24 @@ class BookTable extends React.Component {
         }else{
             for(let book of this.is_editing_books){
                 if(book.bookID == this.changeBookID){
-                    this.props.updateBook(book);
+                    this.props.updateBook(book,this.updateIndex);
                 }
             }
         }
         this.setState({editRow: -1});
         this.changeBookID = -1;
+        this.updateIndex = false;
     }
 
     onChange(book, col, e) {//如果每输入一次就更新state 会导致排序+输入的情况下 输入未完成表格就变了
+        let attr = this.props.headerKeys[col];
+        if(attr == "description"){
+            this.updateIndex = true;
+        }
         this.changeBookID = book.bookID;
         for(let index in this.is_editing_books){
             if(this.is_editing_books[index].bookID===book.bookID){
-                this.is_editing_books[index][this.props.headerKeys[col]] = e.target.value;
+                this.is_editing_books[index][attr] = e.target.value;
                 break;
             }
         }
@@ -287,9 +292,13 @@ export class BookManagement extends React.Component {
     必须保证所有的函数调用都有async await
 
      */
-    async updateBook(book) {
+    async updateBook(book,updateIndex) {
         console.log(book);
-        await updateBook(book);
+        if(!updateIndex){
+            await updateBook(book);
+        }else{
+            await updateBookIndex(book);
+        }
 
         this.updateBooks();
     }
