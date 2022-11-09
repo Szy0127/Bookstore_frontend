@@ -125,7 +125,9 @@ export const logout = (callback) => {
 
 export const Redirect = () => {
     message.error("请先登录");
-    return <Navigate to="/login"/>
+    history.push("/login");
+    history.go();
+    // return <Navigate to="/login"/>
 }
 
 const nonce = 12345;

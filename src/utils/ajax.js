@@ -1,5 +1,6 @@
-const base_url = "http://localhost:8080/";
-// const base_url = "https://localhost:8443/";
+// const base_url = "http://localhost:8080/";//gateway
+// const base_url = "http://localhost:8081/";//backend
+const base_url = "https://localhost:8443/";//https gateway
 let postRequest_v2 = (url, data, callback) => {
     console.log(url,data);
     let formData = new FormData();
@@ -8,7 +9,6 @@ let postRequest_v2 = (url, data, callback) => {
         if(data.hasOwnProperty(p))
             formData.append(p, data[p]);
     }
-
     let opts = {
         method: "POST",
         dateType:'json',

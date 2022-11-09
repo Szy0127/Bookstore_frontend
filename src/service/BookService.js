@@ -125,5 +125,5 @@ export const searchBooksByDescription = (description,callback) => {
     postRequest_v2(base_url+"searchBooksByDescription",{description},callback);
 }
 
-// export const ws_url = "wss://localhost:8443/websocket/orderFinish/";//+userID
-export const ws_url = "ws://localhost:8080/websocket/orderFinish/";//+userID
+export const ws_url = "wss://localhost:8443/websocket/orderFinish/";//+userID
+// export const ws_url = "ws://localhost:8081/websocket/orderFinish/";//+userID
